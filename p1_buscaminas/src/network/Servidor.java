@@ -28,16 +28,32 @@ public class Servidor {
                 System.out.println("Usuario: " + username +" recibido desde "+ cl.getInetAddress()+ ":"+ cl.getLocalPort());
                 System.out.println("Con dificultad: "+ difficulty);
                 
-                /*int[][] tablero;
+                int[][] tablero = null;
                 switch (difficulty) {
                     case "facil":
                         tablero = GenerarTablero.generarTablero(9, 9, 10);
                         break;
-                    case ""
-                }*/
+                    case "intermedio":
+                        tablero = GenerarTablero.generarTablero(16, 16, 40);
+                        break;
+                    case "experto":
+                        tablero = GenerarTablero.generarTablero(16, 30, 99);
+                        break;
+                    default:
+                        tablero = GenerarTablero.generarTablero(9, 9, 10);
+                        break;
+                }
+
+                //ya que tenemos el tablero creado, se lo enviamos al cliente
+                ObjectOutputStream oos =  new ObjectOutputStream(cl.getOutputStream());
+                oos.writeObject(tablero);
+                oos.flush();
+                
+                
 
                 dis.close();
                 dos.close();
+                oos.close();
                 cl.close();
             }
 

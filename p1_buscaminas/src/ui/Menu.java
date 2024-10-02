@@ -2,6 +2,8 @@ package ui;
  
 import network.Cliente;
 
+import javax.swing.*;
+
 
 /**
  *
@@ -164,10 +166,16 @@ public class Menu extends javax.swing.JFrame {
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
         String username = TxtuserName.getText();
         String difficulty = (String) difComboBox.getSelectedItem();
-        
+        boolean band = false;
+
+        if(username.isEmpty()) {
+            username = "DeScOnOcIdO";
+        }
         Cliente client = new Cliente();
         client.save(username, difficulty);
+
     }//GEN-LAST:event_StartButtonActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
