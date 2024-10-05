@@ -2,8 +2,7 @@ package network;
 
 import java.io.*;
 import java.net.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 //import javax.swing.*;
 import ui.Menu;
 
@@ -38,18 +37,22 @@ public class Cliente {
             
             ObjectInputStream ois = new ObjectInputStream(cl.getInputStream());
             int[][] tablero = (int[][]) ois.readObject();
-            
-            
-            // Crear la interfaz gráfica del tablero
+
+
             JFrame frame = new JFrame("Buscaminas");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setLayout(new java.awt.GridLayout(tablero.length, tablero[0].length));
-            
+
             for (int i = 0; i < tablero.length; i++) {
                 for (int j = 0; j < tablero[i].length; j++) {
                     JButton btn = new JButton();
-                    if (tablero[i][j] == 1) {
-                        btn.setText("Mina"); // Esto se escondería en un juego real
+                    // Mostrar el estado del botón según el contenido del tablero
+                    if (tablero[i][j] == -2) { // Mina
+                        btn.setText("Mina"); // Puedes cambiar esto por un icono
+                    } else if (tablero[i][j] > 0) { // Número de minas adyacentes
+                        btn.setText(String.valueOf(tablero[i][j]));
+                    } else {
+                        btn.setText(""); // Espacio vacío
                     }
                     frame.add(btn);
                 }

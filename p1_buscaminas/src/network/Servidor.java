@@ -3,7 +3,9 @@ package network;
 
 import java.io.*;
 import java.net.*;
-import logica.GenerarTablero;
+
+
+import logica.Juego;
 
 /**
  *
@@ -27,22 +29,36 @@ public class Servidor {
                 String difficulty = (String) dis.readUTF();
                 System.out.println("Usuario: " + username +" recibido desde "+ cl.getInetAddress()+ ":"+ cl.getLocalPort());
                 System.out.println("Con dificultad: "+ difficulty);
-                
-                int[][] tablero = null;
+
+                Juego juego = null;
                 switch (difficulty) {
                     case "facil":
-                        tablero = GenerarTablero.generarTablero(9, 9, 10);
+                        //tablero = GenerarTablero.generarTablero(9, 9, 10);
+                        //Juego juego = new Juego();
+                        //Juego juego = new Juego("facil");
+                        juego = new Juego("facil");
                         break;
                     case "intermedio":
-                        tablero = GenerarTablero.generarTablero(16, 16, 40);
+                        //tablero = GenerarTablero.generarTablero(16, 16, 40);
+                        //Juego juego = new Juego();
+                        //Juego juego1 = new Juego("intermedio");
+                        juego = new Juego("intermedio");
                         break;
                     case "experto":
-                        tablero = GenerarTablero.generarTablero(16, 30, 99);
+                        //tablero = GenerarTablero.generarTablero(16, 30, 99);
+                        //Juego juego = new Juego();
+                        //Juego juego2 = new Juego("experto");
+                        juego = new Juego("experto");
                         break;
                     default:
-                        tablero = GenerarTablero.generarTablero(9, 9, 10);
+                        //tablero = GenerarTablero.generarTablero(9, 9, 10);
+                        //Juego juego = new Juego();
+                        //Juego juego3 = new Juego("facil");
+                        juego = new Juego("facil");
                         break;
                 }
+
+                int[][] tablero = juego.getTablero();
 
                 //ya que tenemos el tablero creado, se lo enviamos al cliente
                 ObjectOutputStream oos =  new ObjectOutputStream(cl.getOutputStream());
