@@ -11,6 +11,7 @@ public class Cliente {
     
     private String userName;
     private String difficultyy;
+
     
     public static void main(String[] args) {
         Menu menu = new Menu();
@@ -42,6 +43,15 @@ public class Cliente {
             //System.out.println(tablero.toString());
 
             Juego juego = new Juego(tablero);
+
+            // Configurar el listener para recibir el tiempo final
+            /*juego.setGameListener((minutes, seconds, won) -> {
+                if (won) {
+                    // Aquí puedes enviar el tiempo al servidor
+                    System.out.println("Ganaste! Tiempo: " + minutes + " minutos y " + seconds + " segundos.");
+                    // Enviar tiempo al servidor si es necesario
+                }
+            });*/
 
             /*JFrame frame = new JFrame("Buscaminas");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

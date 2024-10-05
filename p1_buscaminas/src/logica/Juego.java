@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class Juego {
+    int tiempoFinalMin;
+    int tiempoFinalSeg;
 
     //Atributos
     JFrame ventana;
@@ -27,6 +29,7 @@ public class Juego {
     int columnas;
     int minas;
     String Dificultad;
+    boolean primerClick = false;
 
     //Juego
     JPanel panelJuego;
@@ -43,12 +46,15 @@ public class Juego {
     int contBanderas;
     int contRestante;
     int[][] tablero;
+
+    boolean terminado;
     //Constructor de la clase juego
     public Juego(int[][] tablero){
         this.tablero = tablero;
         this.filas = tablero.length;
         this.columnas = tablero[0].length;
         this.minas = countMinas(tablero);
+        this.terminado = false;
 
 
         //this.Dificultad = Dificultad;
@@ -117,7 +123,7 @@ public class Juego {
             }
         }
 
-        tiempo.start();
+        //tiempo.start();
         marcadorBanderas.setText("Banderas: " + contBanderas);
 
         setupBoard();
@@ -204,12 +210,12 @@ public class Juego {
                                         contRestante = 0;
                                         for (int m = 0; m < filas; m++) {
                                             for (int n = 0; n < columnas; n++) {
-                                                if(/*auxmat[m][n] == -1 || */auxmat[m][n] == -3){
+                                                if(auxmat[m][n] == -3 || auxmat[m][n] == -1){
                                                     contRestante++;
                                                 }
 
                                             }
-                                            if(contRestante == minas){
+                                            if(contRestante == minas && contBanderas==0){
                                                 JOptionPane.showMessageDialog(ventana, "Ganaste, ¡Felicidades!");
                                                 System.exit(0);
                                             }
@@ -260,6 +266,10 @@ public class Juego {
     }
 
     public void handleMousePress(MouseEvent e, int i, int j) {
+        if(primerClick) {
+            tiempo.start();
+            primerClick = false;
+        }
         if (e.getButton() == MouseEvent.BUTTON1) {
             // Handle left click
             if (tablero[i][j] != -2 && tablero[i][j] != 0 && auxmat[i][j] != -3) {
@@ -309,9 +319,16 @@ public class Juego {
             }
         }
         if (contRestante == minas) {
+            tiempo.stop();
+            tiempoFinalMin = min;
+            tiempoFinalSeg = seg;
             JOptionPane.showMessageDialog(ventana, "Ganaste, ¡Felicidades!");
             System.exit(0);
         }
+    }
+
+    public int[] getTiempoFinal(){
+        return new int[]{tiempoFinalMin, tiempoFinalSeg};
     }
 
     private void handleRightClick(int i, int j) {
@@ -464,3 +481,15 @@ public class Juego {
         //return new int[0][];
     }
 }
+
+/*public class ResultadoJuego{
+    private boolean ganado;
+
+    public boolean isGanado() {
+        return ganado;
+    }
+
+    public void setGanado(boolean ganado) {
+        this.ganado = ganado;
+    }
+}*/
