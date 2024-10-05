@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import javax.swing.*;
 //import javax.swing.*;
+import logica.Juego;
 import ui.Menu;
 
 public class Cliente {
@@ -38,13 +39,17 @@ public class Cliente {
             ObjectInputStream ois = new ObjectInputStream(cl.getInputStream());
             int[][] tablero = (int[][]) ois.readObject();
 
+            //System.out.println(tablero.toString());
 
-            JFrame frame = new JFrame("Buscaminas");
+            Juego juego = new Juego(tablero);
+
+            /*JFrame frame = new JFrame("Buscaminas");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setLayout(new java.awt.GridLayout(tablero.length, tablero[0].length));
 
             for (int i = 0; i < tablero.length; i++) {
                 for (int j = 0; j < tablero[i].length; j++) {
+                    System.out.println("Tablero en la posicion :" + i + " " + tablero[i]);
                     JButton btn = new JButton();
                     // Mostrar el estado del botón según el contenido del tablero
                     if (tablero[i][j] == -2) { // Mina
@@ -60,7 +65,7 @@ public class Cliente {
             
             frame.pack();
             frame.setVisible(true);
-
+            */
             // Cerrar conexiones
             dos.close();
             cl.close();

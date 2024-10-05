@@ -42,11 +42,16 @@ public class Juego {
     int seg;
     int contBanderas;
     int contRestante;
-
+    int[][] tablero;
     //Constructor de la clase juego
-    public Juego(String Dificultad){
+    public Juego(int[][] tablero){
+        this.tablero = tablero;
+        this.filas = tablero.length;
+        this.columnas = tablero[0].length;
+        this.minas = countMinas(tablero);
 
-        this.Dificultad = Dificultad;
+
+        //this.Dificultad = Dificultad;
         ventana = new JFrame("Buscaminas");
         ventana.setSize(1489,1009);
         ventana.setLocationRelativeTo(null);
@@ -93,39 +98,49 @@ public class Juego {
                     min++;
                 }
                 marcadorTiempo.setText("Tiempo:  "+ min+":"+seg);
-            }});
+            }
+        });
 
-
+        contBanderas = minas;
         marcadorBanderas = new JLabel("Banderas: "+ contBanderas);
         marcadorBanderas.setSize(80, 30);
         marcadorBanderas.setVisible(true);
         marcadorBanderas.setForeground(Color.WHITE);
         panelJuego.add(marcadorBanderas, 0);
 
+        auxmat = new int[filas][columnas];
+        matriz = new JLabel[filas][columnas];
+
+        for(int i = 0; i<filas; i++){
+            for(int j=0; j<columnas; j++){
+                matriz[i][j] = new JLabel();
+            }
+        }
+
+        tiempo.start();
+        marcadorBanderas.setText("Banderas: " + contBanderas);
+
+        setupBoard();
+        // Mouse listener for the game
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                // Evento del mouse para cada imágen de la matriz
+                int finalI = i;
+                int finalJ = j;
+                matriz[i][j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        handleMousePress(e, finalI, finalJ);
+                    }
+                });
+            }
+        }
+
 
 
         //Evento para empezar a jugar
 
 
-        switch (Dificultad) {
-            case "facil":
-                filas = 9;
-                columnas = 9;
-                minas = 10;
-                break;
-            case "intermedio":
-                filas = 16;
-                columnas = 16;
-                minas = 40;
-                break;
-            case "experto":
-                filas = 16;
-                columnas = 30;
-                minas = 99;
-                break;
-            default:
-                break;
-        }
 
 
         mat = new int[filas][columnas];
@@ -231,6 +246,93 @@ public class Juego {
     public Juego() {
 
     }
+
+    private int countMinas(int[][] tablero) {
+        int minasCount = 0;
+        for (int[] row : tablero) {
+            for (int cell : row) {
+                if (cell == -2) {
+                    minasCount++;
+                }
+            }
+        }
+        return minasCount;
+    }
+
+    public void handleMousePress(MouseEvent e, int i, int j) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            // Handle left click
+            if (tablero[i][j] != -2 && tablero[i][j] != 0 && auxmat[i][j] != -3) {
+                auxmat[i][j] = tablero[i][j];
+                matriz[i][j].setIcon(new ImageIcon("Imagenes/" + auxmat[i][j] + ".png"));
+            }
+            // Handle mine click
+            if (tablero[i][j] == -2) {
+                revealMines();
+                JOptionPane.showMessageDialog(ventana, "BOOM, perdiste");
+                System.exit(0);
+                tiempo.stop();
+            }
+            // Handle empty space click
+            if (tablero[i][j] == 0 && auxmat[i][j] != -3) {
+                revealEmptySpaces(i, j);
+            }
+            checkWinCondition();
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            // Handle right click
+            handleRightClick(i, j);
+        }
+    }
+
+    private void revealMines() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (tablero[i][j] == -2) {
+                    auxmat[i][j] = tablero[i][j];
+                    matriz[i][j].setIcon(new ImageIcon("Imagenes/" + auxmat[i][j] + ".png"));
+                }
+            }
+        }
+    }
+
+    private void revealEmptySpaces(int i, int j) {
+        // Implement the recursive reveal logic here
+    }
+
+    private void checkWinCondition() {
+        contRestante = 0;
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (auxmat[i][j] == -1) {
+                    contRestante++;
+                }
+            }
+        }
+        if (contRestante == minas) {
+            JOptionPane.showMessageDialog(ventana, "Ganaste, ¡Felicidades!");
+            System.exit(0);
+        }
+    }
+
+    private void handleRightClick(int i, int j) {
+        // Implement flagging logic here
+    }
+
+    private void setupBoard() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                auxmat[i][j] = -1; // Initialize auxmat
+                matriz[i][j].setSize(30, 30);
+                matriz[i][j].setLocation(50 + (j * 30), 75 + (i * 30));
+                matriz[i][j].setIcon(new ImageIcon("Imagenes/" + auxmat[i][j] + ".png"));
+                matriz[i][j].setVisible(true);
+                panelJuego.add(matriz[i][j], 0);
+            }
+        }
+        panelJuego.revalidate();
+        panelJuego.repaint();
+    }
+
 
     public void inicializarMatriz(){
 
