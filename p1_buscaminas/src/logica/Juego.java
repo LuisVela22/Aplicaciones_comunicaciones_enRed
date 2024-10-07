@@ -9,7 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import static java.lang.constant.ConstantDescs.NULL;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -196,6 +202,29 @@ public class Juego {
 
                                             }
                                             JOptionPane.showMessageDialog(ventana, "BOOM, perdiste");
+                                            FileWriter archivo = null;
+                                            PrintWriter escritor = null;
+                                            try {
+                                                archivo = new FileWriter("Record.txt", true);
+                                                escritor = new PrintWriter(archivo);
+                                                escritor.println("Perdiste! " + "Tu tiempo fue de: " + min + ":" + seg);
+                                                // Asegurarse de que los datos se escriben en el archivo
+                                                escritor.flush();
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+                                            } finally {
+                                                if (escritor != null) {
+                                                    escritor.close();  // Importante cerrar para que se escriba el contenido
+                                                }
+                                                try {
+                                                    if (archivo != null) {
+                                                        archivo.close();
+                                                    }
+                                                } catch (IOException ex) {
+                                                    Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                            }
+
                                             System.exit(0);
                                             tiempo.stop();
 
@@ -217,6 +246,29 @@ public class Juego {
                                             }
                                             if(contRestante == minas && contBanderas==0){
                                                 JOptionPane.showMessageDialog(ventana, "Ganaste, ¡Felicidades!");
+                                                FileWriter archivo = null;
+                                                PrintWriter escritor = null;
+                                                try {
+                                                    archivo = new FileWriter("Record.txt", true);
+                                                    escritor = new PrintWriter(archivo);
+                                                    escritor.println("Perdiste! " + "Tu tiempo fue de: " + min + ":" + seg);
+                                                    // Asegurarse de que los datos se escriben en el archivo
+                                                    escritor.flush();
+                                                } catch (IOException ex) {
+                                                    Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+                                                } finally {
+                                                    if (escritor != null) {
+                                                        escritor.close();  // Importante cerrar para que se escriba el contenido
+                                                    }
+                                                    try {
+                                                        if (archivo != null) {
+                                                            archivo.close();
+                                                        }
+                                                    } catch (IOException ex) {
+                                                        Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+                                                    }
+                                                }
+
                                                 System.exit(0);
                                             }
                                         }
@@ -271,19 +323,19 @@ public class Juego {
             primerClick = false;
         }
         if (e.getButton() == MouseEvent.BUTTON1) {
-            // Handle left click
+            // Click inquierso
             if (tablero[i][j] != -2 && tablero[i][j] != 0 && auxmat[i][j] != -3) {
                 auxmat[i][j] = tablero[i][j];
                 matriz[i][j].setIcon(new ImageIcon("Imagenes/" + auxmat[i][j] + ".png"));
             }
-            // Handle mine click
+            // Lógica para cuando se oprime una mina
             if (tablero[i][j] == -2) {
                 revealMines();
                 JOptionPane.showMessageDialog(ventana, "BOOM, perdiste");
                 System.exit(0);
                 tiempo.stop();
             }
-            // Handle empty space click
+            // Lógica para cuando se oprime un espacio
             if (tablero[i][j] == 0 && auxmat[i][j] != -3) {
                 revealEmptySpaces(i, j);
             }
@@ -332,7 +384,6 @@ public class Juego {
     }
 
     private void handleRightClick(int i, int j) {
-        // Implement flagging logic here
     }
 
     private void setupBoard() {
@@ -480,7 +531,10 @@ public class Juego {
         return mat;
         //return new int[0][];
     }
+
 }
+
+
 
 /*public class ResultadoJuego{
     private boolean ganado;
