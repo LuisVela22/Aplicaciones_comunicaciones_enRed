@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bfea2e08-020c-4702-93ae-8a7c5b9a646e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../ChatP3/cara.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/risa.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/src/main/java/org/example/Network/Cli.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/src/main/java/org/example/Network/Serv.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/src/main/java/org/example/UI/GUI.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/src/main/java/org/example/UI/GUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatP3/wow.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/UI.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/UI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/Record.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/Record.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/Formato.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/Objeto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego.class" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/build/classes/logica/Juego.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/build/classes/network/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/build/classes/network/Cliente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p1_buscaminas/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/out/production/Flujo_Objeto/Formato.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p1_buscaminas/out/production/Flujo_Objeto/Objeto.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2pIyVh6PMoU40vQUQOVCpxnVBAJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfea2e08-020c-4702-93ae-8a7c5b9a646e" name="Changes" comment="" />
+      <created>1732467913134</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732467913134</updated>
+      <workItem from="1732467914207" duration="260000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
