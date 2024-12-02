@@ -15,14 +15,6 @@ Hilos en aplicaciones de red.
 Comunicación cliente-servidor.
 📂 Proyectos
 
-Proyecto 1: Chat grupal con multicasting.
-Proyecto 2: Transferencia de archivos por sockets.
-Proyecto 3: Servidor web básico.
-📚 Recursos
-
-Material de apoyo.
-Ejemplos prácticos.
-Documentación sobre protocolos de red.
 🔧 Tecnologías Utilizadas
 Lenguaje de programación: Java
 Herramientas: IntelliJ IDEA, Wireshark, Netcat
@@ -33,6 +25,7 @@ Para ejecutar los proyectos y prácticas, asegúrate de tener instalados:
 Java JDK 8 o superior
 IntelliJ IDEA (o tu IDE preferido)
 Wireshark para el análisis de tráfico de red (opcional).
+
 🛠️ Instalación y Ejecución
 Clona el repositorio:
 bash
