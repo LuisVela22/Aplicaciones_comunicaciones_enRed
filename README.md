@@ -13,42 +13,37 @@ Programación de sockets (TCP/UDP).
 Multicast y broadcast.
 Hilos en aplicaciones de red.
 Comunicación cliente-servidor.
+
+
 📂 Proyectos
 
 🔧 Tecnologías Utilizadas
 Lenguaje de programación: Java
 Herramientas: IntelliJ IDEA, Wireshark, Netcat
 Protocolos: TCP, UDP, HTTP, Multicast
+
 📜 Requisitos
 Para ejecutar los proyectos y prácticas, asegúrate de tener instalados:
-
 Java JDK 8 o superior
 IntelliJ IDEA (o tu IDE preferido)
 Wireshark para el análisis de tráfico de red (opcional).
 
 🛠️ Instalación y Ejecución
 Clona el repositorio:
-bash
-Copiar código
-git clone https://github.com/tu_usuario/aplicaciones-red-escom.git
+git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
 Navega al proyecto deseado:
-bash
-Copiar código
-cd aplicaciones-red-escom/proyecto-1
-Compila y ejecuta:
-bash
-Copiar código
-javac Main.java
-java Main
+
+
 🤝 Colaboradores
-Nombre del estudiante 1
-Nombre del estudiante 2
-Profesor: [Nombre del profesor]
+Flores Morales Aldahir Andrés 
+
+Profesor: Axeel Eernesto Cervantes
+
 📅 Cronograma de Actividades
 Actividad	Fecha límite	Estado
-Configuración del entorno	01 de septiembre	✅ Completado
-Práctica 1 (Sockets TCP)	15 de septiembre	✅ Completado
-Proyecto 1 (Chat grupal)	30 de septiembre	🔄 En progreso
+PRACTICA 1	(Sockets bloqueantes)   01 de septiembre	✅ Completado
+Práctica 2 (Sockets UDP)	15 de septiembre	✅ Completado
+Proyecto 3 (Chat grupal)	30 de septiembre	🔄 En progreso
 ...	...	...
 🌟 Recursos Adicionales
 Documentación oficial de Java Networking
@@ -56,9 +51,3 @@ Guía práctica de sockets en Java
 Protocolos de red
 📝 Licencia
 Este repositorio está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
-
-📧 Contacto
-Si tienes alguna duda o sugerencia, no dudes en contactarme:
-
-Correo: tu_correo@alumno.ipn.mx
-GitHub: tu_usuario
