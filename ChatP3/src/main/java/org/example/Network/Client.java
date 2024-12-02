@@ -7,59 +7,49 @@ import org.example.UI.GUIChat;
 
 public class Client extends Thread {
 
-    public static final String MCAST_ADDR = "230.1.1.1";
-    public static final int MCAST_PORT = 4000;
-    public static final int DGRAM_BUF_LEN = 2048;
-    GUIChat v = new GUIChat(0);
+    GUIChat ui = new GUIChat(0);
 
     public void run() {
         InetAddress group = null;
         try {
-            group = InetAddress.getByName(MCAST_ADDR);
+            group = InetAddress.getByName("231.0.0.0");
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        boolean salta = true;
-
         try {
-            MulticastSocket socket = new MulticastSocket(MCAST_PORT);
+            MulticastSocket socket = new MulticastSocket(4000);
             socket.joinGroup(group);
-            DatagramPacket contacto = new DatagramPacket(("<inicio>" + v.getNombre()).getBytes(), ("<inicio>" + v.getNombre()).length(), group, MCAST_PORT);
+            DatagramPacket contacto = new DatagramPacket(("<inicio>" + ui.getNombre()).getBytes(), ("<inicio>" + ui.getNombre()).length(), group, 4000);
             socket.send(contacto);
-            while (salta) {
-                //System.out.println("entro");
-                if (v.getStatus() == 0) {     //Lectura
-                    //System.out.println("entro lectura");
+            while (true) {
+                if (ui.getStatus() == 0) {     //Lectura 
                     socket.setSoTimeout(100);
                     try {
-                        byte[] buf = new byte[DGRAM_BUF_LEN];
+                        byte[] buf = new byte[2048];
                         DatagramPacket recv = new DatagramPacket(buf, buf.length);
                         socket.receive(recv);
                         byte[] data = recv.getData();
                         String mensaje = new String(data);
-                        System.out.println("Datos recibidos: " + mensaje);
-                        v.setNewMessage(mensaje);
+                        ui.setNewMessage(mensaje); //procesa el mensaje recibido y lo muestra en la pantalla    
                     } catch (Exception e) {
                     }
-                } else if (v.getStatus() == 1) {   //Escritura
-                    //System.out.println("entro Escritura");
+                } else if (ui.getStatus() == 1) {   //Escritura
                     String mensaje = "";
                     
-                    if(v.getSalida() == 1){
-                        mensaje = "<salida>" + v.getNombre();
+                    if(ui.getSalida() == 1){//EL USAURIO YA SALIO DEL CHAT // CASO CONTRARIO SIGUE EN EÑ CHAT
+                        mensaje = "<salida>" + ui.getNombre();
                     }else{
-                        if(v.getActiveTab() != 0){
-                            mensaje = "C<msj><privado><" + v.getNombre() + "><" + v.getContactosChat(v.getActiveTab()) + ">" + v.getActiveMessage();
-                        }else if(v.getActiveTab() == 0){
-                            mensaje = "C<msj> " + v.getNombre() + " Dice: " + v.getActiveMessage();
+                        if(ui.getActiveTab() != 0){//devuelve el inddice de la pantalla en uso
+                            mensaje = "C<msj><privado><" + ui.getNombre() + "><" + ui.getContactosChat(ui.getActiveTab()) + ">" + ui.getActiveMessage();
+                        }else if(ui.getActiveTab() == 0){                           //devuelve el nombre del cintacto con la pestaña asociada
+                            mensaje = "C<msj> " + ui.getNombre() + " Dice: " + ui.getActiveMessage();
                         }
                     }
-                    DatagramPacket packet = new DatagramPacket(mensaje.getBytes(), mensaje.length(), group, MCAST_PORT);
-                    System.out.println("Enviando: " + mensaje + "  con un TTL= " + socket.getTimeToLive());
+                    DatagramPacket packet = new DatagramPacket(mensaje.getBytes(), mensaje.length(), group, 4000);
                     socket.send(packet);
-                    v.setStatus(0);
+                    ui.setStatus(0);
                 }
             }
         } catch (IOException e) {
@@ -79,5 +69,5 @@ public class Client extends Thread {
             e.printStackTrace();
         }
 
-    }//main
-}//class
+    }
+}

@@ -44,7 +44,7 @@ public class GUIChat implements ActionListener{
         }
         ventana = new JFrame();
         
-        ventana.setSize(500, 600);
+        ventana.setSize(500, 470);
         ventana.setTitle("Messenred");
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
@@ -88,8 +88,14 @@ public class GUIChat implements ActionListener{
     private void setButtons(){
         JButton newChat = new JButton();
         newChat.addActionListener(this);
-        newChat.setText("Nuevo chat privado");
-        newChat.setBounds(290, 10, 200, 30);
+        newChat.setText("..");
+        //CAMBIAR ESTOOOO
+        //-------------
+        //-------------
+        //-------------
+        newChat.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\user22.gif"));
+        newChat.setBounds(290, 10, 35, 30);
+        newChat.setBorderPainted(false);
         panel.add(newChat);
     }
     
@@ -123,7 +129,7 @@ public class GUIChat implements ActionListener{
         newPanel.add(textoEnviar.get(textoEnviar.size() - 1));
         newPanel.add(texto2);
 
-         JButton opciones = new JButton("...");
+        JButton opciones = new JButton("...");
         opciones.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\doc.png"));
         botonesEnviar.add(opciones); // Agregar el botón a la lista
         botonesEnviar.get(botonesEnviar.size() - 1).setText("...");
@@ -139,40 +145,40 @@ public class GUIChat implements ActionListener{
         botonesEnviar.get(botonesEnviar.size() - 1).setText("Enviar");
         botonesEnviar.get(botonesEnviar.size() - 1).addActionListener(this);
         String butname = "Enviar" + (botonesEnviar.size() - 1);
-        System.out.println(butname);
+        //System.out.println(butname);
         botonesEnviar.get(botonesEnviar.size() - 1).setName(butname);
         newPanel.add(botonesEnviar.get(botonesEnviar.size() - 1));
 
-        JButton risa = new JButton("");
-        risa.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\risaa.gif"));
-        risa.setBorderPainted(false);
-        risa.setContentAreaFilled(false);
-        risa.setFocusPainted(false);
-        botonesEnviar.add(risa);
-        botonesEnviar.get(botonesEnviar.size() - 1).setBounds(200, 400, 60, 38);
-        botonesEnviar.get(botonesEnviar.size() - 1).setText("r");
-        botonesEnviar.get(botonesEnviar.size() - 1).addActionListener(this);
-        String butnamee = "Enviar" + (botonesEnviar.size() - 1);
-        //System.out.println(butnamee);
-        botonesEnviar.get(botonesEnviar.size() - 1).setName(butnamee);
-        newPanel.add(botonesEnviar.get(botonesEnviar.size() - 1));
+        // JButton risa = new JButton("");
+        // risa.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\risaa.gif"));
+        // risa.setBorderPainted(false);
+        // risa.setContentAreaFilled(false);
+        // risa.setFocusPainted(false);
+        // botonesEnviar.add(risa);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setBounds(200, 400, 60, 38);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setText("r");
+        // botonesEnviar.get(botonesEnviar.size() - 1).addActionListener(this);
+        // String butnamee = "Enviar" + (botonesEnviar.size() - 1);
+        // //System.out.println(butnamee);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setName(butnamee);
+        // newPanel.add(botonesEnviar.get(botonesEnviar.size() - 1));
 
 
 
         
-        JButton wow = new JButton("");
-        wow.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\woww.gif"));
-        wow.setBorderPainted(false);
-        wow.setContentAreaFilled(false);
-        wow.setFocusPainted(false);
-        botonesEnviar.add(wow);
-        botonesEnviar.get(botonesEnviar.size() - 1).setBounds(100, 400, 60, 38);
-        botonesEnviar.get(botonesEnviar.size() - 1).setText("r");
-        botonesEnviar.get(botonesEnviar.size() - 1).addActionListener(this);
-        String butnameee = "Enviar" + (botonesEnviar.size() - 1);
-        //System.out.println(butnamee);
-        botonesEnviar.get(botonesEnviar.size() - 1).setName(butnameee);
-        newPanel.add(botonesEnviar.get(botonesEnviar.size() - 1));
+        // JButton wow = new JButton("");
+        // wow.setIcon(new ImageIcon("C:\\Users\\Luis Velasco\\OneDrive\\Documentos\\5to s escom\\redes2\\practicas\\ChatP3\\woww.gif"));
+        // wow.setBorderPainted(false);
+        // wow.setContentAreaFilled(false);
+        // wow.setFocusPainted(false);
+        // botonesEnviar.add(wow);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setBounds(100, 400, 60, 38);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setText("r");
+        // botonesEnviar.get(botonesEnviar.size() - 1).addActionListener(this);
+        // String butnameee = "Enviar" + (botonesEnviar.size() - 1);
+        // //System.out.println(butnamee);
+        // botonesEnviar.get(botonesEnviar.size() - 1).setName(butnameee);
+        // newPanel.add(botonesEnviar.get(botonesEnviar.size() - 1));
         
         
         contactosChat.add(nombre);
@@ -223,7 +229,7 @@ public class GUIChat implements ActionListener{
             String contacto = "";
             contactos.clear();
             for(int i = 12; i < mensaje.length(); i++){
-                System.out.println("|" + mensaje.charAt(i) + "|");
+                //System.out.println("|" + mensaje.charAt(i) + "|");
                 //Thread.sleep(1000);
                 if(Character.isLetter(mensaje.charAt(i))){                    
                     contacto += mensaje.charAt(i);
@@ -235,23 +241,16 @@ public class GUIChat implements ActionListener{
                 }
             }
             contactos.add(contacto);
-            System.out.println(contactos);
-            //contactos.remove(Nombre);
+            contactos.remove(Nombre);
         }else if(mensaje.startsWith("S<msj>")){
             String remitente = "";
             mensaje = mensaje.substring(6);
             
-            //char feliz = (char) "\u1F600";
-            
-            mensaje = mensaje.replace(":)", "\uD83D\uDE04");
-            mensaje = mensaje.replace(":D", "\uD83D\uDE03");
-            mensaje = mensaje.replace(":3", "\uD83D\uDE0A");
-            mensaje = mensaje.replace(":P", "\uD83D\uDE1C");
-            mensaje = mensaje.replace(":(", "\uD83D\uDE14");
-            mensaje = mensaje.replace(":'(", "\uD83D\uDE22");
-            mensaje = mensaje.replace("D:", "\uD83D\uDE29");
-            mensaje = mensaje.replace(">:c", "\uD83D\uDE21");
-            
+            mensaje = mensaje.replace("XQ", "\uD83D\uDE04");
+            mensaje = mensaje.replace("XW", "\uD83D\uDE03");
+            mensaje = mensaje.replace("XE", "\uD83D\uDE0A");
+            mensaje = mensaje.replace("XR", "\uD83D\uDE1C");
+    
             
             if(mensaje.contains("<privado>")){
                 String destinatario = "";
@@ -265,14 +264,14 @@ public class GUIChat implements ActionListener{
                 mensaje = mensaje.substring(i + 1);
                 
                 i = 1;
-                System.out.println(mensaje);
+                //System.out.println(mensaje);
                 while(Character.isLetter(mensaje.charAt(i))){
                     destinatario = destinatario + mensaje.charAt(i);
                     i++;
                 }
                 mensaje = mensaje.substring(i + 1);
-                System.out.println(mensaje);
-                System.out.println("Remitente: " + remitente + " destinatario: " + destinatario);
+                // System.out.println(mensaje);
+                // System.out.println("Remitente: " + remitente + " destinatario: " + destinatario);
                 
                 if(Nombre.equals(destinatario)){
                     if(contactosChat.contains(remitente)){
@@ -307,14 +306,14 @@ public class GUIChat implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         
         JButton boton = (JButton) ae.getSource();
-        
-        if(boton.getActionCommand().equals("Nuevo chat privado")){
+        //PARA LOS CONTACTOS EN LA SALA 
+        if(boton.getActionCommand().equals("..")){
             if(contactos.toArray().length == 0){
-                JOptionPane.showMessageDialog(null, "En este momento no hay contactos en linea", "Contactos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No hay miembros en el chat", "Contactos", JOptionPane.ERROR_MESSAGE);
             }else{
                 ArrayList<String> contactosMostrar = contactos;
                 contactosMostrar.remove(Nombre);
-                String seleccion = (String) JOptionPane.showInputDialog(null, "Nuevo chat", "Seleccione el usuario con el que desea crear un chat", JOptionPane.INFORMATION_MESSAGE, null, contactosMostrar.toArray(), contactosMostrar.toArray()[0]);
+                String seleccion = (String) JOptionPane.showInputDialog(null, "Chat privado", "Users Online", JOptionPane.INFORMATION_MESSAGE, null, contactosMostrar.toArray(), contactosMostrar.toArray()[0]);
                 if(contactosChat.contains(seleccion)){
                     chats.setSelectedIndex(contactosChat.indexOf(seleccion));
                 }else{

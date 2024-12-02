@@ -213,7 +213,7 @@ public class GUI extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         System.out.println("<img src=\"risa.gif\"width=\"50\" height=\"50\"></img>");
                mensaje_medio= mensaje_medio+"  <tr>\n" +
-            "    <td>"+fieldUser.getText()+" dice: </td>\n" +
+            "    <td>"+fi   eldUser.getText()+" dice: </td>\n" +
             "    <td>"+"<img src=\"risa.gif\"width=\"50\" height=\"50\"></img>"+"</td>\n" +
             "  </tr>";
         panelDialog.setText(mensaje_inicio+mensaje_medio+mensaje_final);

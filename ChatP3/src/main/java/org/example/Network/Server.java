@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class Server extends Thread {
 
-    public static final String MCAST_ADDR = "230.1.1.1";//dir clase D valida, grupo al que nos vamos a unir
-    public static final int MCAST_PORT = 4000;
-    public static final int DGRAM_BUF_LEN = 2048;
     private ArrayList<String> contactos;
 
     public void run() {
@@ -16,24 +13,25 @@ public class Server extends Thread {
         String msg = "";
         InetAddress group = null;
         try {
-            group = InetAddress.getByName(MCAST_ADDR);	
+            group = InetAddress.getByName("231.0.0.0");	
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
         }
+
+        System.out.println("Servidor corriendo en la dirección 231.0.0.0, puerto 4000, esperando clientes...");
         for (;;) {
             try {
-                MulticastSocket socket = new MulticastSocket(MCAST_PORT);
+                MulticastSocket socket = new MulticastSocket(4000);
                 socket.joinGroup(group);
                 
                 //Espera a recibir los datos de algun cliente
                 
-                byte[] buf = new byte[DGRAM_BUF_LEN];
+                byte[] buf = new byte[2048];
                 DatagramPacket recv = new DatagramPacket(buf,buf.length);
                 socket.receive(recv);
                 byte [] data = recv.getData();
                 msg = new String(data);
-                System.out.println("Datos recibidos: " + msg);
                 
                 if(msg.contains("<inicio>")){
                     msg = msg.substring(8);
@@ -46,16 +44,13 @@ public class Server extends Thread {
                     contactos.add(nombre);
                     String cont = "<contactos>" + contactos.toString();
                     //Envio de los contactos
-                    System.out.println("Enviando: " + cont);
-                    DatagramPacket packet = new DatagramPacket( cont.getBytes(), cont.length(), group, MCAST_PORT);
-                    //System.out.println("Enviando: " + msg + "  con un TTL= " + socket.getTimeToLive());
+                    DatagramPacket packet = new DatagramPacket( cont.getBytes(), cont.length(), group, 4000);
                     socket.send(packet);
                     socket.close();
                 }else if(msg.contains("C<msj>")){
                     msg = msg.substring(1);
                     msg = "S" + msg;
-                    DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, MCAST_PORT);
-                    System.out.println("Enviando: " + msg.toString() + "  con un TTL= " + socket.getTimeToLive());
+                    DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, 4000);
                     socket.send(packet);
                     socket.close();
                 }else if(msg.contains("<salida>")){
@@ -68,9 +63,7 @@ public class Server extends Thread {
                     contactos.remove(salida);
                     String cont = "<contactos>" + contactos.toString();
                     //Envio de los contactos
-                    System.out.println("Enviando: " + cont);
-                    DatagramPacket packet = new DatagramPacket( cont.getBytes(), cont.length(), group, MCAST_PORT);
-                    //System.out.println("Enviando: " + msg + "  con un TTL= " + socket.getTimeToLive());
+                    DatagramPacket packet = new DatagramPacket( cont.getBytes(), cont.length(), group, 4000);
                     socket.send(packet);
                     socket.close(); 
                 }
@@ -81,7 +74,7 @@ public class Server extends Thread {
             }
 
             try {
-                Thread.sleep(1000 * 5);
+                Thread.sleep(5000);
             } catch (InterruptedException ie) {
             }
         }
@@ -90,8 +83,8 @@ public class Server extends Thread {
     public static void main(String[] args) {
 
         try {
-            Server mc2 = new Server();
-            mc2.start();
+            Server srv = new Server();
+            srv.start();
 
         } catch (Exception e) {
             e.printStackTrace();
