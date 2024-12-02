@@ -23,31 +23,43 @@ Herramientas: IntelliJ IDEA, Wireshark, Netcat
 Protocolos: TCP, UDP, HTTP, Multicast
 
 📜 Requisitos
+
 Para ejecutar los proyectos y prácticas, asegúrate de tener instalados:
 Java JDK 8 o superior
 IntelliJ IDEA (o tu IDE preferido)
 Wireshark para el análisis de tráfico de red (opcional).
 
 🛠️ Instalación y Ejecución
+
+
 Clona el repositorio:
 git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
-Navega al proyecto deseado:
 
 
 🤝 Colaboradores
+
 Flores Morales Aldahir Andrés 
 
 Profesor: Axeel Eernesto Cervantes
 
 📅 Cronograma de Actividades
+
 Actividad	Fecha límite	Estado
 PRACTICA 1	(Sockets bloqueantes)   01 de septiembre	✅ Completado
+
 Práctica 2 (Sockets UDP)	15 de septiembre	✅ Completado
-Proyecto 3 (Chat grupal)	30 de septiembre	🔄 En progreso
+
+Proyecto 3 (Chat grupal)	30 de septiembre	🔄 En progreso    ----> Creditos a: https://github.com/GerardoGarzon
+
 ...	...	...
 🌟 Recursos Adicionales
+
 Documentación oficial de Java Networking
+
 Guía práctica de sockets en Java
+
 Protocolos de red
+
+
 📝 Licencia
 Este repositorio está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
