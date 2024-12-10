@@ -39,7 +39,6 @@ git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
 🤝 Colaboradores
 
 Flores Morales Aldahir Andrés 
-
 Profesor: Axeel Eernesto Cervantes
 
 📅 Cronograma de Actividades
