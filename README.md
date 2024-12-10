@@ -37,9 +37,8 @@ git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
 
 
 🤝 Colaboradores
-
 Flores Morales Aldahir Andrés 
-Profesor: Axeel Eernesto Cervantes
+Profesor: Axeel Eernesto Moreno Cervantes
 
 📅 Cronograma de Actividades
 
@@ -48,7 +47,9 @@ PRACTICA 1	(Sockets bloqueantes)   01 de septiembre	✅ Completado
 
 Práctica 2 (Sockets UDP)	15 de septiembre	✅ Completado
 
-Proyecto 3 (Chat grupal)	30 de septiembre	🔄 En progreso    ----> Creditos a: https://github.com/GerardoGarzon
+Proyecto 3 (Chat grupal)	30 de septiembre	✅ Completado    ----> Creditos a: https://github.com/GerardoGarzon
+
+Proyecto 4 (ServidorWeb)	12 de diciembre	 ✅ Completado    
 
 ...	...	...
 🌟 Recursos Adicionales
