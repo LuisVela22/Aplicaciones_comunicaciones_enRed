@@ -1,8 +1,13 @@
-import java.net.*;
 import java.io.*;
-import java.util.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.http.HttpClient;
+import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+
 public class ServidorWEB {
 	public static final int PUERTO = 8000;
 	ServerSocket ss;
@@ -60,8 +65,13 @@ public class ServidorWEB {
 
 					}
 					System.out.println(FileName);
-				} else if (line.toUpperCase().startsWith("GET")) {
-					StringTokenizer tokens = new StringTokenizer(line, "?");
+				} else if (line.toUpperCase().startsWith("GET /?")) {
+					StringTokenizer tokens = new StringTokenizer(line, " /?");
+					tokens.nextToken();
+					String url = tokens.nextToken();
+					System.out.println("URL: " + url);
+					obtenerParametros(url);
+					/*StringTokenizer tokens = new StringTokenizer(line, "?");
 					String req_a = tokens.nextToken();
 					String req = tokens.nextToken();
 					System.out.println("Token1: " + req_a + "\r\n\r\n");
@@ -74,7 +84,7 @@ public class ServidorWEB {
 					pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
 					pw.print("<h3><b>" + req + "</b></h3>");
 					pw.print("</center></body></html>");
-					pw.flush();
+					pw.flush();*/
 				}
 				else {
 					pw.println("HTTP/1.0 501 Not Implemented");
@@ -94,6 +104,36 @@ public class ServidorWEB {
 			}
 		}
 
+		public void obtenerParametros(String line) {
+			String[] parts = line.split("&");
+			for (String part : parts) {
+				System.out.println(part);
+			}
+				//pw.println("HTTP/1.0 200 Okay");
+				//pw.flush();
+				//pw.println();
+				//pw.flush();
+				//pw.print("<html><head><title>SERVIDOR WEB</title></head>");
+				//pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
+				//pw.print("<h3><b>" + req + "</b></h3>");
+				//pw.print("</center></body></html>");
+				//pw.flush();
+
+			/*StringTokenizer tokens = new StringTokenizer(line, "?");
+			String req_a = tokens.nextToken();
+			String req = tokens.nextToken();
+			System.out.println("Token1: " + req_a + "\r\n\r\n");
+			System.out.println("Token2: " + req + "\r\n\r\n");
+			pw.println("HTTP/1.0 200 Okay");
+			pw.flush();
+			pw.println();
+			pw.flush();
+			pw.print("<html><head><title>SERVIDOR WEB</title></head>");
+			pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
+			pw.print("<h3><b>" + req + "</b></h3>");
+			pw.print("</center></body></html>");
+			pw.flush();*/
+		}
 		public String getMimeType(String fileName) {
 			if (fileName.endsWith(".html") || fileName.endsWith(".htm")) {
 				return "text/html";
