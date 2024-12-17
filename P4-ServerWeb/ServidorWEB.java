@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class ServidorWEB {
 	public static final int PUERTO = 8000;
 	ServerSocket ss;
@@ -41,37 +40,27 @@ public class ServidorWEB {
 				System.out.println("Por el puerto: " + socket.getPort());
 				System.out.println("Datos: " + line + "\r\n\r\n");
 
-				//procesa GET sin parametros
-				if (line.indexOf("?") == -1) { //aqui entra porque no hay parametros
+				//Aqui entra porque la peticion no tiene parametros "?"
+				if (line.indexOf("?") == -1) {
 					getArch(line);
-					if (FileName.compareTo("") == 0) { // aqui entra si no hay archivo
-						FileName = "zoo.jpg";
-						//SendA("shaq.jpg");
+					if (FileName.compareTo("") == 0) {
+						SendA("index.htm");
 					}
-					if (FileName.endsWith(".jpg") || FileName.endsWith(".jpeg")) {
-						pw.println("HTTP/1.0 200 OK");
-						pw.println("Content-Type: image/jpg"); // Tipo MIME correcto para imágenes JPEG
-						pw.println(); // Línea en blanco para separar los headers del contenido
-						pw.flush();
-						SendA(FileName);
-					} else {
-						FileName = "index.htm";
-						SendA(FileName);
+					else { //esto respode a cualquier metodo
+							//http con un archivo
+						if(line.contains("GET")) {
+							//System.out.println("ENTRO CORRECTO");
+							String mimeType = getMimeType(FileName);
+							SendA(FileName, mimeType);
+						} else{
+							//System.out.println("ENTRO CORRECTO");
+							SendA("405.html");
+						}
+
+
 					}
 					System.out.println(FileName);
-				} //GET_FIN
-				//procesa GET con parametros
-				else if (line.toUpperCase().startsWith("GET")) { //aqui entra porque hay parametros
-					if(line.toUpperCase().startsWith("GET /?")) {
-						pw.println("HTTP/1.0 200 OK");
-						pw.println("Content-Type: text/html");
-						pw.println();
-						pw.println("<html><head><title>SERVIDOR WEB</title></head>");
-						pw.println("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
-						pw.println("<h3><b>No hay parametros</b></h3>");
-						pw.println("</center></body></html>");
-						pw.flush();
-					}
+				} else if (line.toUpperCase().startsWith("GET")) {
 					StringTokenizer tokens = new StringTokenizer(line, "?");
 					String req_a = tokens.nextToken();
 					String req = tokens.nextToken();
@@ -86,54 +75,6 @@ public class ServidorWEB {
 					pw.print("<h3><b>" + req + "</b></h3>");
 					pw.print("</center></body></html>");
 					pw.flush();
-				} else if (line.toUpperCase().startsWith("POST")) {
-					int cl = 0, ii = 0;
-					while (cl == 0) {
-						String header = br.readLine();
-						System.out.println("Recibiendo: " + header + "\r\n");
-						if (header.startsWith("Content-Length:")) {
-							String temp = header.substring(header.indexOf(" ") + 1, header.length());
-							cl = Integer.parseInt(temp);
-							System.out.println("Content Length: " + cl + "\r\n");
-						}
-						ii++;
-					}
-					String data = "";
-					for (int j = 0; j < cl; j++) {
-						data += (char) br.read();
-					}
-					System.out.println("Datos: " + data + "\r\n");
-					pw.println("HTTP/1.0 200 Okay");
-					pw.flush();
-					pw.println();
-					pw.flush();
-					pw.print("<html><head><title>SERVIDOR WEB</title></head>");
-					pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Datos Obtenidos..</br></h1>");
-					pw.print("<h3><b>" + data + "</b></h3>");
-					pw.print("</center></body></html>");
-					pw.flush();
-				} else if (line.toUpperCase().startsWith("HEAD")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("PUT")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("DELETE")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("TRACE")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("OPTIONS")) {
-					System.out.println("Opciones");
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("CONNECT")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
-				} else if (line.toUpperCase().startsWith("PATCH")) {
-					pw.println("HTTP/1.0 200 Okay");
-					pw.println();
 				}
 				else {
 					pw.println("HTTP/1.0 501 Not Implemented");
@@ -152,6 +93,27 @@ public class ServidorWEB {
 				e.printStackTrace();
 			}
 		}
+
+		public String getMimeType(String fileName) {
+			if (fileName.endsWith(".html") || fileName.endsWith(".htm")) {
+				return "text/html";
+			} else if (fileName.endsWith(".pdf")) {
+				return "application/pdf";
+			} else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+				return "image/jpeg";
+			} else if (fileName.endsWith(".png")) {
+				return "image/png";
+			} else if (fileName.endsWith(".css")) {
+				return "text/css";
+			} else if (fileName.endsWith(".js")) {
+				return "application/javascript";
+			} else if (fileName.endsWith(".txt")) {
+				return "text/plain";
+			} else {
+				return "application/octet-stream"; // Tipo MIME por defecto (descarga de archivos binarios)
+			}
+		}
+
 
 		public void getArch(String line) {
 			int i;
@@ -199,65 +161,96 @@ public class ServidorWEB {
 			//System.out.println("nombre archivo: "+FileName);
 		}
 
-		/*public void SendA(String fileName) {
+		public void SendA(String fileName, String mimeType) {
 			try {
-				int b_leidos = 0;
+				// Abrir el archivo solicitado
 				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(fileName));
 				byte[] buf = new byte[1024];
+				int b_leidos;
 
-				//int tam_archivo = bis2.available();
-				long tam_archivo = new File(fileName).length();
+				// Obtener el tamaño del archivo
+				File file = new File(fileName);
+				int tam_archivo = (int) file.length();
+
+				// Crear encabezado HTTP
 				StringBuilder sb = new StringBuilder();
 				sb.append("HTTP/1.0 200 OK\n");
-				sb.append("Server: Axel Server/1.0 \n");
-				sb.append("Date: ").append(new Date()).append(" \n");
-				sb.append("Content-Type: image/jpg \n");
-				sb.append("Content-Length: ").append(tam_archivo).append(" \n");
+				sb.append("Server: Axel Server/1.0\n");
+				sb.append("Date: " + new Date() + "\n");
+				sb.append("Content-Type: " + mimeType + "\n");
+				sb.append("Content-Length: " + tam_archivo + "\n");
 				sb.append("\n");
+
+				// Enviar encabezado HTTP
 				bos.write(sb.toString().getBytes());
 				bos.flush();
 
+				// Leer y enviar el contenido del archivo
 				while ((b_leidos = bis2.read(buf, 0, buf.length)) != -1) {
 					bos.write(buf, 0, b_leidos);
 				}
 				bos.flush();
+
+				// Cerrar flujo de entrada
 				bis2.close();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		}*/
-		public void SendA(String fileName) {
-			try {
-				File file = new File(fileName);
-				long tam_archivo = file.length(); // Obtener el tamaño real del archivo
+		}
 
-				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(file));
-				byte[] buf = new byte[1024];
-				int b_leidos;
+		public void SendA(String arg)
+		{
+			try{
+				int b_leidos=0;
+				BufferedInputStream bis2=new BufferedInputStream(new FileInputStream(arg));
+				byte[] buf=new byte[1024];
+				int tam_bloque=0;
+				if(bis2.available()>=1024)
+				{
+					tam_bloque=1024;
+				}
+				else
+				{
+					bis2.available();
+				}
 
-				// Encabezado HTTP
-				StringBuilder sb = new StringBuilder();
-				sb.append("HTTP/1.0 200 OK\r\n");
-				sb.append("Server: Axel Server/1.0\r\n");
-				sb.append("Date: ").append(new Date()).append("\r\n");
-				sb.append("Content-Type: image/jpeg\r\n"); // Asegúrate de usar 'image/jpeg'
-				sb.append("Content-Length: ").append(tam_archivo).append("\r\n");
-				sb.append("\r\n");
-
-				bos.write(sb.toString().getBytes());
+				int tam_archivo=bis2.available();
+				/***********************************************/
+				String sb = "";
+				sb = sb+"HTTP/1.0 200 ok\n";
+				sb = sb +"Server: Axel Server/1.0 \n";
+				sb = sb +"Date: " + new Date()+" \n";
+				sb = sb +"Content-Type: text/html \n";
+				sb = sb +"Content-Length: "+tam_archivo+" \n";
+				sb = sb +"\n";
+				bos.write(sb.getBytes());
 				bos.flush();
 
-				// Enviar los datos binarios del archivo
-				while ((b_leidos = bis2.read(buf)) != -1) {
-					bos.write(buf, 0, b_leidos);
+				//out.println("HTTP/1.0 200 ok");
+				//out.println("Server: Axel Server/1.0");
+				//out.println("Date: " + new Date());
+				//out.println("Content-Type: text/html");
+				//out.println("Content-Length: " + mifichero.length());
+				//out.println("\n");
+
+				/***********************************************/
+
+				while((b_leidos=bis2.read(buf,0,buf.length))!=-1)
+				{
+					bos.write(buf,0,b_leidos);
+
+
 				}
 				bos.flush();
 				bis2.close();
-			} catch (Exception e) {
-				System.out.println("Error: " + e.getMessage());
-			}
-		}
 
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+
+		}
 	}
 
 	public ServidorWEB() throws Exception {
