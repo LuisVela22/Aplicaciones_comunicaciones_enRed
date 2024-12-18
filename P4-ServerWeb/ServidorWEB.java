@@ -53,21 +53,27 @@ public class ServidorWEB {
 					}
 					else { //esto respode a cualquier metodo
 							//http con un archivo
-						if(line.contains("GET")) {
+						/*if(line.contains("GET")) {
 							if(!line.contains("?")){
 								SendA("400.html");
 								return;
 							}
 
-							//System.out.println("ENTRO CORRECTO");
+
 							String mimeType = getMimeType(FileName);
-							SendA(FileName, mimeType);
+
+							SendA("recursos/"+FileName, mimeType);
 						} else{
-							//System.out.println("ENTRO CORRECTO");
+
 							SendA("405.html");
+						}*/
+						File file = new File("recursos/" + FileName);
+						if(file.exists()) {
+							String mimeType = getMimeType(FileName);
+							SendA("recursos/"+FileName, mimeType);
+						} else {
+							SendA("404.html");
 						}
-
-
 					}
 					System.out.println(FileName);
 				}
@@ -78,16 +84,51 @@ public class ServidorWEB {
 
                     switch (method) {
                         case "GET":
-                            if (line.toUpperCase().startsWith("GET /?")) {
+							StringTokenizer tokenizer = new StringTokenizer(line, " /?");
+							tokenizer.nextToken(); // Salta el método HTTP (GET)
+							String resource = tokenizer.nextToken(); // Captura el path segment (aesto)
+							System.out.println("Recurso solicitado: " + resource);
+							//System.out.println(resource.length());
+                            /*if (line.toUpperCase().startsWith("GET /?")) {
                                 // Si la petición GET tiene parámetros
                                 StringTokenizer tokens = new StringTokenizer(line, " /?");
                                 tokens.nextToken(); // Saltar el método
                                 String url = tokens.nextToken();
                                 System.out.println("URL: " + url);
                                 obtenerParametros(url); // Manejar parámetros
-                            } else {
+                            } else if (line.toUpperCase().startsWith("GET /"+ resource+ "?")) {
+								// Caso: Petición GET con parámetros en un recurso específico ("/resource?")
+								StringTokenizer tokens = new StringTokenizer(line, " /?");
+								tokens.nextToken(); // Saltar el método
+								String url = tokens.nextToken();
+								System.out.println("URL: " + url);
+								obtenerParametros(url); // Manejar parámetros
+							} else {
+								System.out.println("then, it arrives here?");
+
                                 SendA("400.html"); // Bad Request para GET mal formado
-                            }
+                            }*/
+							if (line.toUpperCase().contains("?")) {
+								System.out.println("Aqui si entra no??");
+								// Si tiene parámetros, verificamos el tipo de solicitud GET
+								if (!(line.toUpperCase().startsWith("GET /" + resource + "?"))) {
+									// Caso: Petición GET con parámetros en un recurso específico ("/recurso?clave1=valor1")
+									StringTokenizer tokens = new StringTokenizer(line, " /?");
+									tokens.nextToken(); // Saltar el método HTTP (GET)
+									tokens.nextToken(); // Saltar el recurso
+									String url = tokens.nextToken(); // Captura los parámetros después del ?
+									System.out.println("URL: " + url);
+									obtenerParametros(url); // Manejar parámetros
+								} else {
+									// Petición GET mal formada (no contiene parámetros en el lugar esperado)
+									System.out.println("Petición GET mal formada");
+									SendA("400.html"); // Bad Request
+								}
+							} else {
+								// Si no tiene parámetros
+								System.out.println("No se encontraron parámetros");
+								SendA("404.html"); // Recurso no encontrado
+							}
                             break;
 
                         case "POST":
