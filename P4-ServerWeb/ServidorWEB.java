@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 public class ServidorWEB {
 	public static final int PUERTO = 8000;
 	ServerSocket ss;
-	private ExecutorService threadPool;
+	private final ExecutorService threadPool;
 
-	class Manejador implements Runnable {
+	class  Manejador implements Runnable {
 		protected Socket socket;
 		protected PrintWriter pw;
 		protected BufferedOutputStream bos;
@@ -54,6 +54,11 @@ public class ServidorWEB {
 					else { //esto respode a cualquier metodo
 							//http con un archivo
 						if(line.contains("GET")) {
+							if(!line.contains("?")){
+								SendA("400.html");
+								return;
+							}
+
 							//System.out.println("ENTRO CORRECTO");
 							String mimeType = getMimeType(FileName);
 							SendA(FileName, mimeType);
@@ -65,31 +70,45 @@ public class ServidorWEB {
 
 					}
 					System.out.println(FileName);
-				} else if (line.toUpperCase().startsWith("GET /?")) {
-					StringTokenizer tokens = new StringTokenizer(line, " /?");
-					tokens.nextToken();
-					String url = tokens.nextToken();
-					System.out.println("URL: " + url);
-					obtenerParametros(url);
-					/*StringTokenizer tokens = new StringTokenizer(line, "?");
-					String req_a = tokens.nextToken();
-					String req = tokens.nextToken();
-					System.out.println("Token1: " + req_a + "\r\n\r\n");
-					System.out.println("Token2: " + req + "\r\n\r\n");
-					pw.println("HTTP/1.0 200 Okay");
-					pw.flush();
-					pw.println();
-					pw.flush();
-					pw.print("<html><head><title>SERVIDOR WEB</title></head>");
-					pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
-					pw.print("<h3><b>" + req + "</b></h3>");
-					pw.print("</center></body></html>");
-					pw.flush();*/
 				}
-				else {
-					pw.println("HTTP/1.0 501 Not Implemented");
-					pw.println();
-				}
+                //en el caso de que la peticion tenga parametros
+                else {
+                    // Extraer el metodo HTTP de la línea
+                    String method = line.split(" ")[0].toUpperCase();
+
+                    switch (method) {
+                        case "GET":
+                            if (line.toUpperCase().startsWith("GET /?")) {
+                                // Si la petición GET tiene parámetros
+                                StringTokenizer tokens = new StringTokenizer(line, " /?");
+                                tokens.nextToken(); // Saltar el método
+                                String url = tokens.nextToken();
+                                System.out.println("URL: " + url);
+                                obtenerParametros(url); // Manejar parámetros
+                            } else {
+                                SendA("400.html"); // Bad Request para GET mal formado
+                            }
+                            break;
+
+                        case "POST":
+                            // Lógica para manejar POST
+                            SendA("405.html"); // Ejemplo: Método no permitido
+                            break;
+
+                        case "PUT":
+                        case "PATCH":
+                        case "DELETE":
+                        case "HEAD":
+                            // Lógica para otros métodos
+                            SendA("405.html"); // Ejemplo: Método no permitido
+                            break;
+
+                        default:
+                            // Si el método no es reconocido o implementado
+                            SendA("501.html");
+                            break;
+                    }
+                }
 
 				pw.flush();
 				bos.flush();
@@ -105,6 +124,7 @@ public class ServidorWEB {
 		}
 
 		public void obtenerParametros(String line) {
+			//System.out.println("Llego a obtener parametros");
 			String[] parts = line.split("&");
 			for (String part : parts) {
 				System.out.println(part);
