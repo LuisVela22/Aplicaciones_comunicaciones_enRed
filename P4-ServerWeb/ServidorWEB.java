@@ -88,34 +88,16 @@ public class ServidorWEB {
 							tokenizer.nextToken(); // Salta el método HTTP (GET)
 							String resource = tokenizer.nextToken(); // Captura el path segment (aesto)
 							System.out.println("Recurso solicitado: " + resource);
-							//System.out.println(resource.length());
-                            /*if (line.toUpperCase().startsWith("GET /?")) {
-                                // Si la petición GET tiene parámetros
-                                StringTokenizer tokens = new StringTokenizer(line, " /?");
-                                tokens.nextToken(); // Saltar el método
-                                String url = tokens.nextToken();
-                                System.out.println("URL: " + url);
-                                obtenerParametros(url); // Manejar parámetros
-                            } else if (line.toUpperCase().startsWith("GET /"+ resource+ "?")) {
-								// Caso: Petición GET con parámetros en un recurso específico ("/resource?")
-								StringTokenizer tokens = new StringTokenizer(line, " /?");
-								tokens.nextToken(); // Saltar el método
-								String url = tokens.nextToken();
-								System.out.println("URL: " + url);
-								obtenerParametros(url); // Manejar parámetros
-							} else {
-								System.out.println("then, it arrives here?");
-
-                                SendA("400.html"); // Bad Request para GET mal formado
-                            }*/
 							if (line.toUpperCase().contains("?")) {
 								System.out.println("Aqui si entra no??");
 								// Si tiene parámetros, verificamos el tipo de solicitud GET
+								//esta parte esta TRUQUEADA-----------------------------------
 								if (!(line.toUpperCase().startsWith("GET /" + resource + "?"))) {
+									System.out.println("supongo que no entra aqui");
 									// Caso: Petición GET con parámetros en un recurso específico ("/recurso?clave1=valor1")
 									StringTokenizer tokens = new StringTokenizer(line, " /?");
 									tokens.nextToken(); // Saltar el método HTTP (GET)
-									tokens.nextToken(); // Saltar el recurso
+									//tokens.nextToken(); // Saltar el recurso
 									String url = tokens.nextToken(); // Captura los parámetros después del ?
 									System.out.println("URL: " + url);
 									obtenerParametros(url); // Manejar parámetros
@@ -165,35 +147,24 @@ public class ServidorWEB {
 		}
 
 		public void obtenerParametros(String line) {
+			pw.print("HTTP/1.0 200 OK\n");
+			pw.print("Content-Type: text/html\n\n");
+			pw.print("<html><head><title>Servidor WEB</title></head>");
 			//System.out.println("Llego a obtener parametros");
+			pw.print("<body bgcolor=\"#AACCFF\">");
+			pw.print("<h1>Parametros Obtenidos</h1>");
+			pw.print("<h3>Clave: Valor</h3>");
+			pw.print("<br>");
+			pw.print("<ul>");
 			String[] parts = line.split("&");
 			for (String part : parts) {
+				pw.print("<li>"+part+"</li>");
 				System.out.println(part);
 			}
-				//pw.println("HTTP/1.0 200 Okay");
-				//pw.flush();
-				//pw.println();
-				//pw.flush();
-				//pw.print("<html><head><title>SERVIDOR WEB</title></head>");
-				//pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
-				//pw.print("<h3><b>" + req + "</b></h3>");
-				//pw.print("</center></body></html>");
-				//pw.flush();
+			pw.print("</ul>");
+			pw.print("</body></html>");
+			pw.flush();
 
-			/*StringTokenizer tokens = new StringTokenizer(line, "?");
-			String req_a = tokens.nextToken();
-			String req = tokens.nextToken();
-			System.out.println("Token1: " + req_a + "\r\n\r\n");
-			System.out.println("Token2: " + req + "\r\n\r\n");
-			pw.println("HTTP/1.0 200 Okay");
-			pw.flush();
-			pw.println();
-			pw.flush();
-			pw.print("<html><head><title>SERVIDOR WEB</title></head>");
-			pw.print("<body bgcolor=\"#AACCFF\"><center><h1><br>Parametros Obtenidos..</br></h1>");
-			pw.print("<h3><b>" + req + "</b></h3>");
-			pw.print("</center></body></html>");
-			pw.flush();*/
 		}
 		public String getMimeType(String fileName) {
 			if (fileName.endsWith(".html") || fileName.endsWith(".htm")) {
@@ -266,7 +237,7 @@ public class ServidorWEB {
 			try {
 				// Abrir el archivo solicitado
 				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(fileName));
-				byte[] buf = new byte[1024];
+				byte[] buf = new byte[65535];
 				int b_leidos;
 
 				// Obtener el tamaño del archivo
@@ -276,11 +247,21 @@ public class ServidorWEB {
 				// Crear encabezado HTTP
 				StringBuilder sb = new StringBuilder();
 				sb.append("HTTP/1.0 200 OK\n");
-				sb.append("Server: Axel Server/1.0\n");
+				sb.append("Server: Luis Server/1.0\n");
 				sb.append("Date: " + new Date() + "\n");
 				sb.append("Content-Type: " + mimeType + "\n");
 				sb.append("Content-Length: " + tam_archivo + "\n");
+				sb.append("Connection: keep-alive\n");
 				sb.append("\n");
+
+				System.out.println("RESPONSE HEADER");
+				System.out.println("HTTP/1.0 200 OK");
+				System.out.println("Server: Luis Server/1.0");
+				System.out.println("Date: " + new Date());
+				System.out.println("Content-Type: " + mimeType);
+				System.out.println("Content-Length: " + tam_archivo);
+				System.out.println("Connection: keep-alive");
+				System.out.println();  // Línea en blanco para separar los encabezados del cuerpo
 
 				// Enviar encabezado HTTP
 				bos.write(sb.toString().getBytes());
@@ -319,11 +300,21 @@ public class ServidorWEB {
 				/***********************************************/
 				String sb = "";
 				sb = sb+"HTTP/1.0 200 ok\n";
-				sb = sb +"Server: Axel Server/1.0 \n";
+				sb = sb +"Server: Luis Server/1.0 \n";
 				sb = sb +"Date: " + new Date()+" \n";
 				sb = sb +"Content-Type: text/html \n";
 				sb = sb +"Content-Length: "+tam_archivo+" \n";
+				sb = sb + "Connection: keep-alive\n";
 				sb = sb +"\n";
+
+				System.out.println("RESPONSE HEADER");
+				System.out.println("HTTP/1.0 200 OK");
+				System.out.println("Server: Luis Server/1.0");
+				System.out.println("Date: " + new Date());
+				System.out.println("Content-Type: " + "text/html");
+				System.out.println("Content-Length: " + tam_archivo);
+				System.out.println("Connection: keep-alive");
+				System.out.println();  // Línea en blanco para separar los encabezados del cuerpo
 				bos.write(sb.getBytes());
 				bos.flush();
 
