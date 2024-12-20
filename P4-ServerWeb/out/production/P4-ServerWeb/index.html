@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Formulario de registro</title>
+</head>
+<body bgcolor="#e0e000">
+<center>
+    <h3>Ejemplo sencillo de un formulario</h3>
+    <h4>Formulario de Registro</h4>
+    <img src="shaq.jpg" alt="Imagen de Shaq"/>
+</center>
+<hr>
+<p>Sea tan amable de rellenar el siguiente formulario.</p>
+<br>
+
+<!-- Primer formulario utilizando GET -->
+<h4>Formulario con método GET</h4>
+<form action="http://localhost:8000" method="GET">
+    Nombre: <br>
+    <input type="text" name="Apellido" required>
+    <br>
+    Dirección: <br>
+    <input type="text" name="Direccion" required>
+    <br>
+    Teléfono: <br>
+    <input type="text" name="Telefono" required>
+    <br>
+    Comentarios:<br>
+    <textarea name="Comentario" rows="7" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Enviar datos (GET)">
+    <input type="reset" value="Borrar datos">
+</form>
+
+<hr>
+
+<!-- Segundo formulario utilizando POST -->
+<h4>Formulario con método POST</h4>
+<form action="http://localhost:8000" method="POST">
+    Nombre: <br>
+    <input type="text" name="Nombre" required>
+    <br>
+    Dirección: <br>
+    <input type="text" name="Direccion" required>
+    <br>
+    Teléfono: <br>
+    <input type="text" name="Telefono" required>
+    <br>
+    Comentarios:<br>
+    <textarea name="Comentario" rows="7" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Enviar datos (POST)">
+    <input type="reset" value="Borrar datos">
+</form>
+</body>
+</html>

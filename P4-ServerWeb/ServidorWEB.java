@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.http.HttpClient;
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
@@ -46,27 +45,12 @@ public class ServidorWEB {
 				System.out.println("Datos: " + line + "\r\n\r\n");
 
 				//Aqui entra porque la peticion no tiene parametros "?"
-				if (line.indexOf("?") == -1) {
+				if (line.indexOf("?") == -1 && line.toUpperCase().startsWith("GET")) {
 					getArch(line);
 					if (FileName.compareTo("") == 0) {
-						SendA("index.htm");
+						SendA("index.html");
 					}
 					else { //esto respode a cualquier metodo
-							//http con un archivo
-						/*if(line.contains("GET")) {
-							if(!line.contains("?")){
-								SendA("400.html");
-								return;
-							}
-
-
-							String mimeType = getMimeType(FileName);
-
-							SendA("recursos/"+FileName, mimeType);
-						} else{
-
-							SendA("405.html");
-						}*/
 						File file = new File("recursos/" + FileName);
 						if(file.exists()) {
 							String mimeType = getMimeType(FileName);
@@ -114,8 +98,31 @@ public class ServidorWEB {
                             break;
 
                         case "POST":
+							System.out.println("Entra aqui?");
+
+							// Leer el encabezado `Content-Length` para determinar la longitud del cuerpo
+							int contentLength = 0;
+							String headerLine;
+							while (!(headerLine = br.readLine()).isEmpty()) {
+								if (headerLine.startsWith("Content-Length:")) {
+									contentLength = Integer.parseInt(headerLine.split(":")[1].trim());
+								}
+							}
+
+							// Leer el cuerpo de la solicitud
+							if (contentLength > 0) {
+								char[] body = new char[contentLength];
+								br.read(body, 0, contentLength); // Leer el cuerpo según la longitud indicada
+								String postData = new String(body);
+								System.out.println("Datos recibidos en el cuerpo de la solicitud POST: " + postData);
+
+								// Parsear los parámetros (asumiendo formato clave1=valor1&clave2=valor2)
+								obtenerParametros(postData);
+							} else {
+								System.out.println("No se recibieron datos en el cuerpo de la solicitud POST");
+							}
                             // Lógica para manejar POST
-                            SendA("405.html"); // Ejemplo: Método no permitido
+                            //SendA("200.html"); // Ejemplo: Método no permitido
                             break;
 
                         case "PUT":
@@ -194,11 +201,11 @@ public class ServidorWEB {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("POST")) {
+			} /*else if (line.toUpperCase().startsWith("POST")) {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("HEAD")) {
+			} */else if (line.toUpperCase().startsWith("HEAD")) {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
