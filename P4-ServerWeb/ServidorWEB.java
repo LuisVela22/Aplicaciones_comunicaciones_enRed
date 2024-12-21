@@ -60,6 +60,8 @@ public class ServidorWEB {
 						}
 					}
 					System.out.println(FileName);
+				} else if((line.toUpperCase().startsWith("POST") || line.toUpperCase().startsWith("DELETE") || line.toUpperCase().startsWith("PUT")) && line.indexOf("?") == -1 ) {
+					SendA("405.html");
 				}
                 //en el caso de que la peticion tenga parametros
                 else {
@@ -182,6 +184,8 @@ public class ServidorWEB {
 				return "image/jpeg";
 			} else if (fileName.endsWith(".png")) {
 				return "image/png";
+			} else if (fileName.endsWith(".gif")) {
+				return "image/gif";
 			} else if (fileName.endsWith(".css")) {
 				return "text/css";
 			} else if (fileName.endsWith(".js")) {
