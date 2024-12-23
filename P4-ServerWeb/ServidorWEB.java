@@ -67,8 +67,9 @@ public class ServidorWEB {
                 else {
                     // Extraer el metodo HTTP de la línea
                     String method = line.split(" ")[0].toUpperCase();
-
+					System.out.println("Metodo: " + method);
                     switch (method) {
+
                         case "GET":
 							StringTokenizer tokenizer = new StringTokenizer(line, " /?");
 							tokenizer.nextToken(); // Salta el método HTTP (GET)
@@ -100,7 +101,7 @@ public class ServidorWEB {
                             break;
 
                         case "POST":
-							System.out.println("Entra aqui?");
+							//System.out.println("Entra aqui?");
 
 							// Leer el encabezado `Content-Length` para determinar la longitud del cuerpo
 							int contentLength = 0;
@@ -126,14 +127,28 @@ public class ServidorWEB {
                             // Lógica para manejar POST
                             //SendA("200.html"); // Ejemplo: Método no permitido
                             break;
+						case "HEAD":
+							getArch(line);
+							System.out.println("Petición HEAD recibida");
+
+							if (FileName == null || FileName.isEmpty() || FileName.equals("/")) {
+								FileName = "index.html"; // Archivo por defecto
+							}
+							File fileHead = new File("recursos/" + FileName);
+							if (fileHead.exists()) {
+								String mimeTypeHead = getMimeType(FileName);
+								sendHeadersOnly("200 OK", mimeTypeHead, fileHead.length());
+							} else {
+								sendHeadersOnly("404 Not Found", "text/html", 0);
+							}
+							break;
 
                         case "PUT":
                         case "PATCH":
                         case "DELETE":
-                        case "HEAD":
-                            // Lógica para otros métodos
-                            SendA("405.html"); // Ejemplo: Método no permitido
-                            break;
+							SendA("405.html");
+							break;
+
 
                         default:
                             // Si el método no es reconocido o implementado
@@ -175,6 +190,34 @@ public class ServidorWEB {
 			pw.flush();
 
 		}
+		private void sendHeadersOnly(String status, String mimeType, long contentLength) {
+			try {
+				StringBuilder sb = new StringBuilder();
+				sb.append("HTTP/1.0 ").append(status).append("\n");
+				sb.append("Server: Luis Server/1.0\n");
+				sb.append("Date: ").append(new Date()).append("\n");
+				sb.append("Content-Type: ").append(mimeType).append("\n");
+				sb.append("Content-Length: ").append(contentLength).append("\n");
+				sb.append("Connection: keep-alive\n");
+				sb.append("\n");
+				System.out.println("HTTP/1.0 " + status);
+				System.out.println("Server: Luis Server/1.0");
+				System.out.println("Date: " + new Date());
+				System.out.println("Content-Type: " + mimeType);
+				System.out.println("Content-Length: " + contentLength);
+				System.out.println("Connection: keep-alive");
+
+				bos.write(sb.toString().getBytes());
+				bos.flush();
+
+
+				pw.print(sb.toString());
+				pw.flush();
+			} catch (Exception e) {
+				System.err.println("Error al enviar encabezados: " + e.getMessage());
+			}
+		}
+
 		public String getMimeType(String fileName) {
 			if (fileName.endsWith(".html") || fileName.endsWith(".htm")) {
 				return "text/html";
@@ -213,7 +256,7 @@ public class ServidorWEB {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("PUT")) {
+			} /*else if (line.toUpperCase().startsWith("PUT")) {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
@@ -233,7 +276,7 @@ public class ServidorWEB {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
-			}
+			}*/
 			else {
 				FileName = "";
 				System.out.println("HTTP/1.0 501 Not Implemented\nhttps://http.cat/status/501");
