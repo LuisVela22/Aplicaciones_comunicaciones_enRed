@@ -46,6 +46,7 @@ public class ServidorWEB {
 
 				//Aqui entra porque la peticion no tiene parametros "?"
 				if (line.indexOf("?") == -1 && line.toUpperCase().startsWith("GET")) {
+					//System.out.println("siii?");
 					getArch(line);
 					if (FileName.compareTo("") == 0) {
 						SendA("index.html");
@@ -54,7 +55,8 @@ public class ServidorWEB {
 						File file = new File("recursos/" + FileName);
 						if(file.exists()) {
 							String mimeType = getMimeType(FileName);
-							SendA("recursos/"+FileName, mimeType);
+							//System.out.println("MIME Type: " + mimeType);
+							SendAA("recursos/"+FileName, mimeType);
 						} else {
 							SendA("404.html");
 						}
@@ -251,7 +253,7 @@ public class ServidorWEB {
 				File f = new File(folderPath + "/" + arg);
 
 				if(f.exists()) {
-					System.out.println("entra al priner if?");
+					//System.out.println("entra al priner if?");
 					if (f.delete()) {
 						System.out.println("------> Archivo " + arg + " eliminado exitosamente\n");
 
@@ -313,7 +315,7 @@ public class ServidorWEB {
 
 		}
 
-		public void SendA(String fileName, String mimeType) {
+		public void SendAA(String fileName, String mimeType) {
 			try {
 				// Abrir el archivo solicitado
 				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(fileName));
