@@ -60,7 +60,7 @@ public class ServidorWEB {
 						}
 					}
 					System.out.println(FileName);
-				} else if((line.toUpperCase().startsWith("POST") || line.toUpperCase().startsWith("DELETE") || line.toUpperCase().startsWith("PUT")) && line.indexOf("?") == -1 ) {
+				} else if((line.toUpperCase().startsWith("POST") || line.toUpperCase().startsWith("PUT")) && line.indexOf("?") == -1 ) {
 					SendA("405.html");
 				}
                 //en el caso de que la peticion tenga parametros
@@ -145,11 +145,14 @@ public class ServidorWEB {
 
                         case "PUT":
                         case "PATCH":
-                        case "DELETE":
 							SendA("405.html");
 							break;
-
-
+                        case "DELETE":
+							//System.out.println("Petición DELETE recibida");
+							getArch(line);
+							//System.out.println("Recurso solicitado: " + FileName);
+							eliminarRecurso(FileName);
+							break;
                         default:
                             // Si el método no es reconocido o implementado
                             SendA("501.html");
@@ -240,51 +243,74 @@ public class ServidorWEB {
 			}
 		}
 
+		public void eliminarRecurso(String arg){
+			System.out.println("llega a eliminar recursos");
+			try {
+				System.out.println(arg);
+				String folderPath = "recursos";
+				File f = new File(folderPath + "/" + arg);
+
+				if(f.exists()) {
+					System.out.println("entra al priner if?");
+					if (f.delete()) {
+						System.out.println("------> Archivo " + arg + " eliminado exitosamente\n");
+
+						String deleteOK = "HTTP/1.1 200 OK\n" +
+								"Date: " + new Date() + " \n" +
+								"Server: Luis Server/1.0 \n" +
+								"Content-Type: text/html \n\n"+
+								"<html><head><meta charset='UTF-8'><title>202 OK Recurso eliminado</title></head>" +
+								"<body><h1>202 OK Recurso eliminado exitosamente.</h1>" +
+								"<p>El recurso " + arg + " ha sido eliminado permanentemente del servidor." +
+								"Ya no se podra acceder más a él.</p>" +
+								"</body></html>";
+
+						bos.write(deleteOK.getBytes());
+						bos.flush();
+						System.out.println("Respuesta DELETE: \n" + deleteOK);
+					}
+					else {
+						System.out.println("El archivo " + arg + " no pudo ser borrado\n");
+
+						String error404 = "HTTP/1.1 404 Not Found\n" +
+								"Date: " + new Date() + " \n" +
+								"Server: EnrikeAbi Server/1.0 \n" +
+								"Content-Type: text/html \n\n" +
+
+								"<html><head><meta charset='UTF-8'><title>404 Not found</title></head>" +
+								"<body><h1>404 Not found</h1>" +
+								"<p>Archivo " + arg + " no encontrado.</p>" +
+								"</body></html>";
+
+						bos.write(error404.getBytes());
+						bos.flush();
+						System.out.println("Respuesta DELETE - ERROR 404: \n" + error404);
+					}
+				}
+				else {
+					SendA("404.html");
+				}
+			}
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
 
 		public void getArch(String line) {
 			int i;
 			int f;
-			if (line.toUpperCase().startsWith("GET")) {
+			if (line.toUpperCase().startsWith("GET") || line.toUpperCase().startsWith("POST") || line.toUpperCase().startsWith("HEAD") || line.toUpperCase().startsWith("PUT") || line.toUpperCase().startsWith("DELETE") || line.toUpperCase().startsWith("TRACE") || line.toUpperCase().startsWith("CONNECT") || line.toUpperCase().startsWith("PATCH")) {
 				i = line.indexOf("/");
 				f = line.indexOf(" ", i);
 				FileName = line.substring(i + 1, f);
-			} /*else if (line.toUpperCase().startsWith("POST")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} */else if (line.toUpperCase().startsWith("HEAD")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} /*else if (line.toUpperCase().startsWith("PUT")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("DELETE")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("TRACE")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("CONNECT")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			} else if (line.toUpperCase().startsWith("PATCH")) {
-				i = line.indexOf("/");
-				f = line.indexOf(" ", i);
-				FileName = line.substring(i + 1, f);
-			}*/
+			}
 			else {
 				FileName = "";
 				System.out.println("HTTP/1.0 501 Not Implemented\nhttps://http.cat/status/501");
 
 			}
 
-
-			//System.out.println("nombre archivo: "+FileName);
 		}
 
 		public void SendA(String fileName, String mimeType) {
