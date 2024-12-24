@@ -328,9 +328,9 @@ public class ServidorWEB {
 		}
 
 		public void eliminarRecurso(String arg){
-			System.out.println("llega a eliminar recursos");
+			//System.out.println("llega a eliminar recursos");
 			try {
-				System.out.println(arg);
+				//System.out.println(arg);
 				String folderPath = "recursos";
 				File f = new File(folderPath + "/" + arg);
 
@@ -343,10 +343,10 @@ public class ServidorWEB {
 								"Date: " + new Date() + " \n" +
 								"Server: Luis Server/1.0 \n" +
 								"Content-Type: text/html \n\n"+
-								"<html><head><meta charset='UTF-8'><title>202 OK Recurso eliminado</title></head>" +
+								"<html><head><meta charset='UTF-8'><title style=\"text-align: center;\">202 OK Recurso eliminado</title></head>" +
 								"<body><h1>202 OK Recurso eliminado exitosamente.</h1>" +
-								"<p>El recurso " + arg + " ha sido eliminado permanentemente del servidor." +
-								"Ya no se podra acceder más a él.</p>" +
+								"<h4 style=\"text-align: center;\">El recurso " + arg + " ha sido eliminado permanentemente del servidor." +
+								"Ya no se podra acceder más a él.</h4>" +
 								"</body></html>";
 
 						bos.write(deleteOK.getBytes());
