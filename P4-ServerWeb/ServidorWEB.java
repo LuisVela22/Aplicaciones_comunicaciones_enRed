@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +19,9 @@ public class ServidorWEB {
 		protected BufferedOutputStream bos;
 		protected BufferedReader br;
 		protected String FileName;
+		private int contentLength; // Variable global para longitud del contenido
+		private String headerLine;
+
 
 		public Manejador(Socket _socket) {
 			this.socket = _socket;
@@ -62,7 +66,7 @@ public class ServidorWEB {
 						}
 					}
 					System.out.println(FileName);
-				} else if((line.toUpperCase().startsWith("POST") || line.toUpperCase().startsWith("PUT")) && line.indexOf("?") == -1 ) {
+				} else if((line.toUpperCase().startsWith("TRACE") || line.toUpperCase().startsWith("OPTIONS")) && line.indexOf("?") == -1 ) {
 					SendA("405.html");
 				}
                 //en el caso de que la peticion tenga parametros
@@ -103,11 +107,7 @@ public class ServidorWEB {
                             break;
 
                         case "POST":
-							//System.out.println("Entra aqui?");
-
 							// Leer el encabezado `Content-Length` para determinar la longitud del cuerpo
-							int contentLength = 0;
-							String headerLine;
 							while (!(headerLine = br.readLine()).isEmpty()) {
 								if (headerLine.startsWith("Content-Length:")) {
 									contentLength = Integer.parseInt(headerLine.split(":")[1].trim());
@@ -121,14 +121,31 @@ public class ServidorWEB {
 								String postData = new String(body);
 								System.out.println("Datos recibidos en el cuerpo de la solicitud POST: " + postData);
 
-								// Parsear los parámetros (asumiendo formato clave1=valor1&clave2=valor2)
+								// Crear la carpeta 'recursos' si no existe
+								File recursosDir = new File("recursos");
+								if (!recursosDir.exists()) {
+									recursosDir.mkdir();  // Crear la carpeta
+								}
+
+								// Generar un nombre único para el archivo (por ejemplo, usando la fecha y hora actual)
+								String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+								String fileName = "recursos/datos_post_" + timestamp + ".txt";
+
+								// Guardar los datos en el archivo con el nombre generado
+								try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+									writer.write(postData);  // Escribir los datos en el archivo
+									writer.flush();
+									System.out.println("Datos guardados en el archivo '" + fileName + "'.");
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+
+								// Parsear los parámetros (como clave1=valor1&clave2=valor2)
 								obtenerParametros(postData);
 							} else {
 								System.out.println("No se recibieron datos en el cuerpo de la solicitud POST");
 							}
-                            // Lógica para manejar POST
-                            //SendA("200.html"); // Ejemplo: Método no permitido
-                            break;
+							break;
 						case "HEAD":
 							getArch(line);
 							System.out.println("Petición HEAD recibida");
@@ -146,6 +163,54 @@ public class ServidorWEB {
 							break;
 
                         case "PUT":
+							getArch(line);
+							//System.out.println("Petición PUT recibida");
+							System.out.println(FileName);
+							// Suponiendo que el nombre del archivo es enviado como parámetro en la solicitud PUT
+							String fileNameToModify = "";  // Variable para almacenar el nombre del archivo recibido
+
+							// Leer el encabezado y los parámetros
+							while (!(headerLine = br.readLine()).isEmpty()) {
+								fileNameToModify = FileName;
+								if (headerLine.startsWith("Content-Length:")) {
+									contentLength = Integer.parseInt(headerLine.split(":")[1].trim());
+								}
+								if (headerLine.startsWith("File-Name:")) {  // Suponemos que el nombre del archivo se envía en el encabezado
+									fileNameToModify = FileName/*headerLine.split(":")[1].trim()*/;
+									System.out.println("esta en el segundo if");
+								}
+							}
+
+							// Leer el cuerpo de la solicitud PUT
+							if (contentLength > 0) {
+								char[] body = new char[contentLength];
+								br.read(body, 0, contentLength); // Leer el cuerpo
+								String putData = new String(body);
+								System.out.println("Datos recibidos en el cuerpo de la solicitud PUT: " + putData);
+
+								// Comprobar que se ha recibido el nombre del archivo y los datos
+								if (fileNameToModify.isEmpty()) {
+									System.out.println("No se proporcionó el nombre del archivo.");
+								} else {
+									File file = new File("recursos/"+fileNameToModify);
+									if (file.exists()) {
+										// Sobrescribir el archivo con los nuevos datos
+										try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+											writer.write(putData);  // Sobrescribir el archivo con los nuevos datos
+											writer.flush();
+											System.out.println("Datos modificados en el archivo '" + fileNameToModify + "'.");
+										} catch (IOException e) {
+											e.printStackTrace();
+										}
+									} else {
+										SendA("404.html");
+										//System.out.println("El archivo especificado no existe: " + fileNameToModify);
+									}
+								}
+							} else {
+								System.out.println("No se recibieron datos en el cuerpo de la solicitud PUT");
+							}
+							break;
                         case "PATCH":
 							SendA("405.html");
 							break;
@@ -218,6 +283,7 @@ public class ServidorWEB {
 
 				pw.print(sb.toString());
 				pw.flush();
+
 			} catch (Exception e) {
 				System.err.println("Error al enviar encabezados: " + e.getMessage());
 			}

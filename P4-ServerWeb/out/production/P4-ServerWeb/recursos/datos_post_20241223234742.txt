@@ -1,0 +1,4 @@
+{
+    "nombre" : "juan",
+    "capital": "macedonia"
+}
