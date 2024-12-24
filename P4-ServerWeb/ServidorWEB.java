@@ -53,7 +53,7 @@ public class ServidorWEB {
 					//System.out.println("siii?");
 					getArch(line);
 					if (FileName.compareTo("") == 0) {
-						SendA("index.html");
+						SendAA("index.html", "text/html", 200);
 					}
 					else { //esto respode a cualquier metodo
 						File file = new File("recursos/" + FileName);
@@ -62,12 +62,12 @@ public class ServidorWEB {
 							//System.out.println("MIME Type: " + mimeType);
 							SendAA("recursos/"+FileName, mimeType, 200);
 						} else {
-							SendA("404.html");
+							SendAA("404.html", "text/html", 404);
 						}
 					}
 					System.out.println(FileName);
 				} else if((line.toUpperCase().startsWith("TRACE") || line.toUpperCase().startsWith("OPTIONS")) && line.indexOf("?") == -1 ) {
-					SendA("405.html");
+					SendAA("405.html", "text/html", 405);
 				}
                 //en el caso de que la peticion tenga parametros
                 else {
@@ -97,20 +97,24 @@ public class ServidorWEB {
 								} else {
 									// Petición GET mal formada (no contiene parámetros en el lugar esperado)
 									System.out.println("Petición GET mal formada");
-									SendA("400.html"); // Bad Request
+									SendAA("400.html", "text/html", 400); // Bad Request
 								}
 							} else {
 								// Si no tiene parámetros
 								System.out.println("No se encontraron parámetros");
-								SendA("404.html"); // Recurso no encontrado
+								SendAA("404.html", "text/html", 404); // Recurso no encontrado
 							}
                             break;
 
                         case "POST":
 							// Leer el encabezado `Content-Length` para determinar la longitud del cuerpo
+							String contentType = "";
 							while (!(headerLine = br.readLine()).isEmpty()) {
 								if (headerLine.startsWith("Content-Length:")) {
 									contentLength = Integer.parseInt(headerLine.split(":")[1].trim());
+								}
+								if (headerLine.startsWith("Content-Type:")) {
+									contentType = headerLine.split(":")[1].trim();
 								}
 							}
 
@@ -119,7 +123,7 @@ public class ServidorWEB {
 								char[] body = new char[contentLength];
 								br.read(body, 0, contentLength); // Leer el cuerpo según la longitud indicada
 								String postData = new String(body);
-								System.out.println("Datos recibidos en el cuerpo de la solicitud POST: " + postData);
+								//System.out.println("Datos recibidos en el cuerpo de la solicitud POST: " + postData);
 
 								// Crear la carpeta 'recursos' si no existe
 								File recursosDir = new File("recursos");
@@ -142,13 +146,23 @@ public class ServidorWEB {
 
 								// Parsear los parámetros (como clave1=valor1&clave2=valor2)
 								obtenerParametros(postData);
+								System.out.println("HTTP/1.0 200");
+								System.out.println("Server: Luis Server/1.0");
+								System.out.println("Date: " + new Date());
+								System.out.println("Content-Type: " + contentType);
+								System.out.println("Content-Length: " + contentLength);
+								System.out.println("Connection: keep-alive");
+
+								//sendHeadersOnly("200 OK", mimeTypeHead, fileHead.length());
+								//SendAA("200.html", "text/html", 200);
 							} else {
+								SendAA("400.html", "text/html", 400);
 								System.out.println("No se recibieron datos en el cuerpo de la solicitud POST");
 							}
 							break;
 						case "HEAD":
 							getArch(line);
-							System.out.println("Petición HEAD recibida");
+							//System.out.println("Petición HEAD recibida");
 
 							if (FileName == null || FileName.isEmpty() || FileName.equals("/")) {
 								FileName = "index.html"; // Archivo por defecto
@@ -177,7 +191,7 @@ public class ServidorWEB {
 								}
 								if (headerLine.startsWith("File-Name:")) {  // Suponemos que el nombre del archivo se envía en el encabezado
 									fileNameToModify = FileName/*headerLine.split(":")[1].trim()*/;
-									System.out.println("esta en el segundo if");
+									//System.out.println("esta en el segundo if");
 								}
 							}
 
@@ -191,6 +205,7 @@ public class ServidorWEB {
 								// Comprobar que se ha recibido el nombre del archivo y los datos
 								if (fileNameToModify.isEmpty()) {
 									System.out.println("No se proporcionó el nombre del archivo.");
+									SendAA("400.html", "text/html", 400);
 								} else {
 									File file = new File("recursos/"+fileNameToModify);
 									if (file.exists()) {
@@ -202,6 +217,7 @@ public class ServidorWEB {
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
+										SendAA("200.html", "text/html", 200);
 									} else {
 										SendAA("404.html", "text/html", 404);
 										//System.out.println("El archivo especificado no existe: " + fileNameToModify);
@@ -211,9 +227,6 @@ public class ServidorWEB {
 								System.out.println("No se recibieron datos en el cuerpo de la solicitud PUT");
 							}
 							break;
-                        case "PATCH":	
-							SendA("405.html");
-							break;
                         case "DELETE":
 							//System.out.println("Petición DELETE recibida");
 							getArch(line);
@@ -222,7 +235,7 @@ public class ServidorWEB {
 							break;
                         default:
                             // Si el método no es reconocido o implementado
-                            SendA("501.html");
+                            SendAA("501.html", "text/html", 501);
                             break;
                     }
                 }
@@ -306,7 +319,10 @@ public class ServidorWEB {
 				return "application/javascript";
 			} else if (fileName.endsWith(".txt")) {
 				return "text/plain";
-			} else {
+			} /*else if (fileName.endsWith(".ico")) {
+				return "image/x-icon";
+
+			} */else {
 				return "application/octet-stream"; // Tipo MIME por defecto (descarga de archivos binarios)
 			}
 		}
@@ -429,7 +445,7 @@ public class ServidorWEB {
 			}
 		}
 
-		public void SendA(String arg)
+		/*public void SendA(String arg)
 		{
 			try{
 				int b_leidos=0;
@@ -446,7 +462,7 @@ public class ServidorWEB {
 				}
 
 				int tam_archivo=bis2.available();
-				/***********************************************/
+
 				String sb = "";
 				sb = sb+"HTTP/1.0 200 ok\n";
 				sb = sb +"Server: Luis Server/1.0 \n";
@@ -467,14 +483,8 @@ public class ServidorWEB {
 				bos.write(sb.getBytes());
 				bos.flush();
 
-				//out.println("HTTP/1.0 200 ok");
-				//out.println("Server: Axel Server/1.0");
-				//out.println("Date: " + new Date());
-				//out.println("Content-Type: text/html");
-				//out.println("Content-Length: " + mifichero.length());
-				//out.println("\n");
 
-				/***********************************************/
+
 
 				while((b_leidos=bis2.read(buf,0,buf.length))!=-1)
 				{
@@ -491,7 +501,7 @@ public class ServidorWEB {
 				System.out.println(e.getMessage());
 			}
 
-		}
+		}*/
 	}
 
 	public ServidorWEB() throws Exception {
