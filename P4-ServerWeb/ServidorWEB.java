@@ -60,7 +60,7 @@ public class ServidorWEB {
 						if(file.exists()) {
 							String mimeType = getMimeType(FileName);
 							//System.out.println("MIME Type: " + mimeType);
-							SendAA("recursos/"+FileName, mimeType);
+							SendAA("recursos/"+FileName, mimeType, 200);
 						} else {
 							SendA("404.html");
 						}
@@ -203,7 +203,7 @@ public class ServidorWEB {
 											e.printStackTrace();
 										}
 									} else {
-										SendA("404.html");
+										SendAA("404.html", "text/html", 404);
 										//System.out.println("El archivo especificado no existe: " + fileNameToModify);
 									}
 								}
@@ -211,7 +211,7 @@ public class ServidorWEB {
 								System.out.println("No se recibieron datos en el cuerpo de la solicitud PUT");
 							}
 							break;
-                        case "PATCH":
+                        case "PATCH":	
 							SendA("405.html");
 							break;
                         case "DELETE":
@@ -356,7 +356,7 @@ public class ServidorWEB {
 					}
 				}
 				else {
-					SendA("404.html");
+					SendAA("404.html", "text/html", 404);
 				}
 			}
 			catch(Exception e) {
@@ -381,7 +381,8 @@ public class ServidorWEB {
 
 		}
 
-		public void SendAA(String fileName, String mimeType) {
+		public void SendAA(String fileName, String mimeType, int statusCode) {
+			System.out.println("aca?");
 			try {
 				// Abrir el archivo solicitado
 				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(fileName));
@@ -394,7 +395,7 @@ public class ServidorWEB {
 
 				// Crear encabezado HTTP
 				StringBuilder sb = new StringBuilder();
-				sb.append("HTTP/1.0 200 OK\n");
+				sb.append("HTTP/1.0 " + statusCode  +"\n");
 				sb.append("Server: Luis Server/1.0\n");
 				sb.append("Date: " + new Date() + "\n");
 				sb.append("Content-Type: " + mimeType + "\n");
@@ -403,7 +404,7 @@ public class ServidorWEB {
 				sb.append("\n");
 
 				System.out.println("RESPONSE HEADER");
-				System.out.println("HTTP/1.0 200 OK");
+				System.out.println("HTTP/1.0 " + statusCode);
 				System.out.println("Server: Luis Server/1.0");
 				System.out.println("Date: " + new Date());
 				System.out.println("Content-Type: " + mimeType);

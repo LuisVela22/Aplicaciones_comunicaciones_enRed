@@ -1,4 +1,4 @@
 {
-    "nombre" : "juan",
-    "capital": "macedonia"
+    "nombre" : "pepe",
+    "capital": "nose"
 }
