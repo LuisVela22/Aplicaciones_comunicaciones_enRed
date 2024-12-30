@@ -58,10 +58,16 @@ public class ServidorWEB {
 					else { //esto respode a cualquier metodo
 						File file = new File("recursos/" + FileName);
 						if(file.exists()) {
-							String mimeType = getMimeType(FileName);
-							//System.out.println("MIME Type: " + mimeType);
-							SendAA("recursos/"+FileName, mimeType, 200);
+							if(FileName.equals("shaq.jpg")) {
+								SendAA("shaq.jpg", "image/jpeg", 200);
+							} else {
+								String mimeType = getMimeType(FileName);
+								//System.out.println("MIME Type: " + mimeType);
+								SendAA("recursos/"+FileName, mimeType, 200);
+							}
+
 						} else {
+							System.out.println("apoco aqui-----------?");
 							SendAA("404.html", "text/html", 404);
 						}
 					}
@@ -319,10 +325,9 @@ public class ServidorWEB {
 				return "application/javascript";
 			} else if (fileName.endsWith(".txt")) {
 				return "text/plain";
-			} /*else if (fileName.endsWith(".ico")) {
+			} else if (fileName.endsWith(".ico")) {
 				return "image/x-icon";
-
-			} */else {
+			} else {
 				return "application/octet-stream"; // Tipo MIME por defecto (descarga de archivos binarios)
 			}
 		}
@@ -398,7 +403,6 @@ public class ServidorWEB {
 		}
 
 		public void SendAA(String fileName, String mimeType, int statusCode) {
-			System.out.println("aca?");
 			try {
 				// Abrir el archivo solicitado
 				BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(fileName));
