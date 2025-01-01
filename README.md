@@ -1,65 +1,28 @@
-🌐 Aplicaciones para Comunicaciones en Red - ESCOM
-Universidad: Instituto Politécnico Nacional
-Escuela: Escuela Superior de Cómputo (ESCOM)
-Materia: Aplicaciones para Comunicaciones en Red
+# 🌐 Aplicaciones para Comunicaciones en Red - ESCOM
 
-📖 Descripción
-Este repositorio contiene los proyectos, prácticas y recursos desarrollados durante la materia Aplicaciones para Comunicaciones en Red, donde se exploran conceptos clave de redes, protocolos de comunicación y desarrollo de aplicaciones distribuidas.
+**Universidad:** Instituto Politécnico Nacional  
+**Escuela:** Escuela Superior de Cómputo (ESCOM)  
+**Materia:** Aplicaciones para Comunicaciones en Red  
+**Compañero:** Flores Morales Aldahir Andrés (https://github.com/Alfx17)
 
-🚀 Contenido del Repositorio
-🧑‍💻 Prácticas
+---
 
-Programación de sockets (TCP/UDP).
-Multicast y broadcast.
-Hilos en aplicaciones de red.
-Comunicación cliente-servidor.
+## 📖 Descripción
 
+Este repositorio contiene los proyectos, prácticas y recursos desarrollados durante la materia **Aplicaciones para Comunicaciones en Red**, en la cual se abordan conceptos clave de redes, protocolos de comunicación y desarrollo de aplicaciones distribuidas.
 
-📂 Proyectos
+---
 
-🔧 Tecnologías Utilizadas
-Lenguaje de programación: Java
-Herramientas: IntelliJ IDEA, Wireshark, Netcat
-Protocolos: TCP, UDP, HTTP, Multicast
+## 🔧 Tecnologías Utilizadas
 
-📜 Requisitos
+- **Lenguaje de programación:** Java  
+- **Herramientas:** IntelliJ IDEA, Wireshark
+- **Protocolos:** TCP, UDP, HTTP, Multicast  
 
-Para ejecutar los proyectos y prácticas, asegúrate de tener instalados:
-Java JDK 8 o superior
-IntelliJ IDEA (o tu IDE preferido)
-Wireshark para el análisis de tráfico de red (opcional).
+---
 
-🛠️ Instalación y Ejecución
+## 🛠️ Instalación y Ejecución
 
-
-Clona el repositorio:
-git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
-
-
-🤝 Colaboradores
-Flores Morales Aldahir Andrés 
-Profesor: Axeel Eernesto Moreno Cervantes
-
-📅 Cronograma de Actividades
-
-Actividad	Fecha límite	Estado
-PRACTICA 1	(Sockets bloqueantes)   01 de septiembre	✅ Completado
-
-Práctica 2 (Sockets UDP)	15 de septiembre	✅ Completado
-
-Proyecto 3 (Chat grupal)	30 de septiembre	✅ Completado    ----> Creditos a: https://github.com/GerardoGarzon
-
-Proyecto 4 (ServidorWeb)	12 de diciembre	 ✅ Completado    
-
-...	...	...
-🌟 Recursos Adicionales
-
-Documentación oficial de Java Networking
-
-Guía práctica de sockets en Java
-
-Protocolos de red
-
-
-📝 Licencia
-Este repositorio está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+1. **Clona el repositorio**:
+   ```bash
+   git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
