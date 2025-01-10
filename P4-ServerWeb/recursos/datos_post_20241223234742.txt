@@ -1,4 +1,0 @@
-{
-    "nombre" : "pepe",
-    "capital": "nose"
-}

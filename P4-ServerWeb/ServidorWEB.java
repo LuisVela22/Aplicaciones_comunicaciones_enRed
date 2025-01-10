@@ -67,7 +67,7 @@ public class ServidorWEB {
 							}
 
 						} else {
-							System.out.println("apoco aqui-----------?");
+							//System.out.println("apoco aqui-----------?");
 							SendAA("404.html", "text/html", 404);
 						}
 					}
@@ -81,18 +81,16 @@ public class ServidorWEB {
                     String method = line.split(" ")[0].toUpperCase();
 					System.out.println("Metodo: " + method);
                     switch (method) {
-
                         case "GET":
 							StringTokenizer tokenizer = new StringTokenizer(line, " /?");
-							tokenizer.nextToken(); // Salta el método HTTP (GET)
+							tokenizer.nextToken();
 							String resource = tokenizer.nextToken(); // Captura el path segment (aesto)
 							System.out.println("Recurso solicitado: " + resource);
 							if (line.toUpperCase().contains("?")) {
 								System.out.println("Aqui si entra no??");
 								// Si tiene parámetros, verificamos el tipo de solicitud GET
-								//esta parte esta TRUQUEADA-----------------------------------
 								if (!(line.toUpperCase().startsWith("GET /" + resource + "?"))) {
-									System.out.println("supongo que no entra aqui");
+									//System.out.println("supongo que no entra aqui");
 									// Caso: Petición GET con parámetros en un recurso específico ("/recurso?clave1=valor1")
 									StringTokenizer tokens = new StringTokenizer(line, " /?");
 									tokens.nextToken(); // Saltar el método HTTP (GET)
@@ -101,7 +99,7 @@ public class ServidorWEB {
 									System.out.println("URL: " + url);
 									obtenerParametros(url); // Manejar parámetros
 								} else {
-									// Petición GET mal formada (no contiene parámetros en el lugar esperado)
+									// Peticion GET mal formada (no contiene parametros en el lugar esperado)
 									System.out.println("Petición GET mal formada");
 									SendAA("400.html", "text/html", 400); // Bad Request
 								}
@@ -287,7 +285,7 @@ public class ServidorWEB {
 				sb.append("Date: ").append(new Date()).append("\n");
 				sb.append("Content-Type: ").append(mimeType).append("\n");
 				sb.append("Content-Length: ").append(contentLength).append("\n");
-				sb.append("Connection: keep-alive\n");
+				//sb.append("Connection: keep-alive\n");
 				sb.append("\n");
 				System.out.println("HTTP/1.0 " + status);
 				System.out.println("Server: Luis Server/1.0");
@@ -349,9 +347,9 @@ public class ServidorWEB {
 								"Server: Luis Server/1.0 \n" +
 								"Content-Type: text/html \n\n"+
 								"<html><head><meta charset='UTF-8'><title style=\"text-align: center;\">202 OK Recurso eliminado</title></head>" +
-								"<body><h1>202 OK Recurso eliminado exitosamente.</h1>" +
-								"<h4 style=\"text-align: center;\">El recurso " + arg + " ha sido eliminado permanentemente del servidor." +
-								"Ya no se podra acceder más a él.</h4>" +
+								"<body><h1 style=\"text-align: center;\">202 OK Recurso eliminado exitosamente</h1>" +
+								//"<h4 style=\"text-align: center;\">El recurso " + arg + " ha sido eliminado permanentemente del servidor." +
+								//"Ya no se podra acceder más a él.</h4>" +
 								"</body></html>";
 
 						bos.write(deleteOK.getBytes());
@@ -363,7 +361,7 @@ public class ServidorWEB {
 
 						String error404 = "HTTP/1.1 404 Not Found\n" +
 								"Date: " + new Date() + " \n" +
-								"Server: EnrikeAbi Server/1.0 \n" +
+								"Server: Luis Server/1.0 \n" +
 								"Content-Type: text/html \n\n" +
 
 								"<html><head><meta charset='UTF-8'><title>404 Not found</title></head>" +
@@ -420,7 +418,7 @@ public class ServidorWEB {
 				sb.append("Date: " + new Date() + "\n");
 				sb.append("Content-Type: " + mimeType + "\n");
 				sb.append("Content-Length: " + tam_archivo + "\n");
-				sb.append("Connection: keep-alive\n");
+				//sb.append("Connection: keep-alive\n");
 				sb.append("\n");
 
 				System.out.println("RESPONSE HEADER");
@@ -511,8 +509,7 @@ public class ServidorWEB {
 	public ServidorWEB() throws Exception {
 		System.out.println("Iniciando Servidor.......");
 		this.ss = new ServerSocket(PUERTO);
-		//creamos una alberca de hilos con 100 hilos
-		this.threadPool = Executors.newFixedThreadPool(100);
+		this.threadPool = Executors.newFixedThreadPool(50);
         System.out.println("Servidor iniciado:---OK");
         System.out.println("Esperando por Cliente....");
         for (;;) {
