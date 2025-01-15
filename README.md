@@ -23,6 +23,6 @@ Este repositorio contiene los proyectos, prácticas y recursos desarrollados dur
 
 ## 🛠️ Instalación y Ejecución
 
-1. **Clona el repositorio**:
+1. **Clona el repositorio HTTPS**:
    ```bash
    git clone https://github.com/LuisVela22/Aplicaciones_comunicaciones_enRed
