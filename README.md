@@ -11,6 +11,11 @@
 
 Este repositorio contiene los proyectos, prácticas y recursos desarrollados durante la materia **Aplicaciones para Comunicaciones en Red**, en la cual se abordan conceptos clave de redes, protocolos de comunicación y desarrollo de aplicaciones distribuidas.
 
+
+## 💡 Créditos
+
+**Práctica3: Chat grupal:**  https://github.com/GerardoGarzon
+
 ---
 
 ## 🔧 Tecnologías Utilizadas
